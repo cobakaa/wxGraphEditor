@@ -36,12 +36,16 @@ class frmMain : public wxFrame
 		wxToolBar* m_toolBar1;
 		wxToolBarToolBase* m_tool1;
 		wxToolBarToolBase* m_tool2;
+		wxToolBarToolBase* m_tool3;
 		wxPanel* m_panel6;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void AddMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void DeleteMode( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ReposMode( wxCommandEvent& event ) { event.Skip(); }
+		virtual void GpabCircle( wxMouseEvent& event ) { event.Skip(); }
 		virtual void DrawCircle( wxMouseEvent& event ) { event.Skip(); }
+		virtual void MotionCircle( wxMouseEvent& event ) { event.Skip(); }
 
 
 	public:

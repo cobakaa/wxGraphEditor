@@ -143,6 +143,18 @@
                             <property name="tooltip"></property>
                             <event name="OnToolClicked">DeleteMode</event>
                         </object>
+                        <object class="tool" expanded="1">
+                            <property name="bitmap">Load From File; ../img/repos.bmp</property>
+                            <property name="context_menu">0</property>
+                            <property name="id">wxID_ANY</property>
+                            <property name="kind">wxITEM_RADIO</property>
+                            <property name="label">tool</property>
+                            <property name="name">m_tool3</property>
+                            <property name="permission">protected</property>
+                            <property name="statusbar"></property>
+                            <property name="tooltip"></property>
+                            <event name="OnToolClicked">ReposMode</event>
+                        </object>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -200,7 +212,9 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style">wxTAB_TRAVERSAL</property>
+                        <event name="OnLeftDown">GpabCircle</event>
                         <event name="OnLeftUp">DrawCircle</event>
+                        <event name="OnMotion">MotionCircle</event>
                     </object>
                 </object>
             </object>

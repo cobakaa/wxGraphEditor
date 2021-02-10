@@ -4,6 +4,7 @@
 
 Node::Node() : pt(wxPoint(0, 0)), rad(0) {
     painted = false;
+    grabbed = false;
 }
 
 Node::Node(wxPoint pt, wxCoord rad) : pt(pt), rad(rad) 
@@ -12,7 +13,7 @@ Node::Node(wxPoint pt, wxCoord rad) : pt(pt), rad(rad)
 }
 
 
-wxPoint Node::GetPoint() {
+wxPoint& Node::GetPoint() {
     return pt;
 }
 
@@ -22,4 +23,8 @@ wxCoord Node::GetRad() {
 
 bool& Node::GetPainted() {
     return painted;
+}
+
+bool& Node::GetGrabbed() {
+    return grabbed;
 }

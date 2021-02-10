@@ -24,12 +24,19 @@ class guifrmMain : public frmMain
 	    void DrawCircle(wxMouseEvent &event) override;
 		void AddMode( wxCommandEvent& event ) override;
 		void DeleteMode( wxCommandEvent& event ) override;
+		void GpabCircle( wxMouseEvent& event ) override;
+		void ReposMode( wxCommandEvent& event ) override;
+		void MotionCircle( wxMouseEvent& event ) override;
+
 		void Render();
+		void AddCircle(wxPoint pt, wxCoord r);
+		void DeleteCircle(wxPoint p);
 
 	private:
 
 		Mode mode;
 		std::vector<Node> nodes;
+		int grabbed_ind;
 
 };
 

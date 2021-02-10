@@ -5,7 +5,7 @@
 // PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#include "../include/gui.h"
+#include "gui.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -20,6 +20,8 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_tool1 = m_toolBar1->AddTool( wxID_ANY, wxT("tool"), wxBitmap( wxT("../../img/add.bmp"), wxBITMAP_TYPE_ANY ), wxNullBitmap, wxITEM_RADIO, wxEmptyString, wxEmptyString, NULL );
 
 	m_tool2 = m_toolBar1->AddTool( wxID_ANY, wxT("tool"), wxBitmap( wxT("../../img/delete.bmp"), wxBITMAP_TYPE_ANY ), wxNullBitmap, wxITEM_RADIO, wxEmptyString, wxEmptyString, NULL );
+
+	m_tool3 = m_toolBar1->AddTool( wxID_ANY, wxT("tool"), wxBitmap( wxT("../../img/repos.bmp"), wxBITMAP_TYPE_ANY ), wxNullBitmap, wxITEM_RADIO, wxEmptyString, wxEmptyString, NULL );
 
 	m_toolBar1->Realize();
 
@@ -37,7 +39,10 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	// Connect Events
 	this->Connect( m_tool1->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::AddMode ) );
 	this->Connect( m_tool2->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::DeleteMode ) );
+	this->Connect( m_tool3->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::ReposMode ) );
+	m_panel6->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( frmMain::GpabCircle ), NULL, this );
 	m_panel6->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( frmMain::DrawCircle ), NULL, this );
+	m_panel6->Connect( wxEVT_MOTION, wxMouseEventHandler( frmMain::MotionCircle ), NULL, this );
 }
 
 frmMain::~frmMain()
@@ -45,6 +50,9 @@ frmMain::~frmMain()
 	// Disconnect Events
 	this->Disconnect( m_tool1->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::AddMode ) );
 	this->Disconnect( m_tool2->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::DeleteMode ) );
+	this->Disconnect( m_tool3->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::ReposMode ) );
+	m_panel6->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( frmMain::GpabCircle ), NULL, this );
 	m_panel6->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( frmMain::DrawCircle ), NULL, this );
+	m_panel6->Disconnect( wxEVT_MOTION, wxMouseEventHandler( frmMain::MotionCircle ), NULL, this );
 
 }

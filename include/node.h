@@ -9,15 +9,17 @@ class Node
 
         Node();
         Node(wxPoint pt, wxCoord rad);
-        wxPoint GetPoint();
+        wxPoint& GetPoint();
         wxCoord GetRad();
         bool& GetPainted();
+        bool& GetGrabbed();
 
 
     private:
         wxPoint pt;
         wxCoord rad;
         bool painted;
+        bool grabbed;
 };
 
 
