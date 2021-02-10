@@ -48,16 +48,21 @@ void guifrmMain::DrawCircle(wxMouseEvent &event) {
             const wxPoint pt = wxGetMousePosition();
             wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
             wxCoord y = pt.y - m_panel6->GetScreenPosition().y;
-            // int cnt = 0;
+            int cnt = 0;
+            bool getInter = false;
 
             for (auto& i : nodes) {
                 if (i.GetPainted() && (i.GetRad() * i.GetRad() > (i.GetPoint().x - x) * (i.GetPoint().x - x) + (i.GetPoint().y - y) * (i.GetPoint().y - y))) { // intersection
-                    i.GetPainted() = false;
+                    // i.GetPainted() = false;
+                    getInter = true;
                     break;
                 }
-                
+                cnt++;
             }
             
+            if (!nodes.empty() && getInter) {
+                nodes.erase(nodes.begin() + cnt);
+            }
             // m_panel6->Refresh();
             Render();
             break;
