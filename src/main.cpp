@@ -20,8 +20,8 @@ public:
 IMPLEMENT_APP(wxMyApp)
 
 
-#include <gui.h>
-#include <guifrmMain.h>
+#include "../include/gui.h"
+#include "../include/guifrmMain.h"
 
 ///////////////////////////////////////////////////////////////////////////
 

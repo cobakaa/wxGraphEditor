@@ -1,8 +1,8 @@
-#include "guifrmMain.h"
+#include "../include/guifrmMain.h"
 #include <wx/dc.h>
 #include <wx/wx.h>
-#include <tools.h>
-#include <node.h>
+#include "../include/tools.h"
+#include "../include/node.h"
 
 guifrmMain::guifrmMain( wxWindow* parent )
 :

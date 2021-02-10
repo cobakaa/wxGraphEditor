@@ -1,7 +1,7 @@
 #ifndef __NODE__
 #define __NODE__
 
-#include <gui.h>
+#include "gui.h"
 
 class Node 
 {

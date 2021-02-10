@@ -1,6 +1,6 @@
-#include <node.h>
-#include <guifrmMain.h>
-#include <gui.h>
+#include "../include/node.h"
+#include "../include/guifrmMain.h"
+#include "../include/gui.h"
 
 Node::Node() : pt(wxPoint(0, 0)), rad(0) {
     painted = false;
