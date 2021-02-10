@@ -23,6 +23,8 @@ class guifrmMain : public frmMain
 
 	    void DrawCircle(wxMouseEvent &event) override;
 		void AddMode( wxCommandEvent& event ) override;
+		void DeleteMode( wxCommandEvent& event ) override;
+		void Render();
 
 	private:
 

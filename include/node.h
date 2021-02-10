@@ -6,6 +6,8 @@
 class Node 
 {
     public:
+
+        Node();
         Node(wxPoint pt, wxCoord rad);
         wxPoint GetPoint();
         wxCoord GetRad();

@@ -17,7 +17,9 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer2 = new wxBoxSizer( wxVERTICAL );
 
 	m_toolBar1 = new wxToolBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL );
-	m_tool1 = m_toolBar1->AddTool( wxID_ANY, wxT("tool"), wxBitmap( wxT("../../img/add.bmp"), wxBITMAP_TYPE_ANY ), wxNullBitmap, wxITEM_CHECK, wxEmptyString, wxEmptyString, NULL );
+	m_tool1 = m_toolBar1->AddTool( wxID_ANY, wxT("tool"), wxBitmap( wxT("../../img/add.bmp"), wxBITMAP_TYPE_ANY ), wxNullBitmap, wxITEM_RADIO, wxEmptyString, wxEmptyString, NULL );
+
+	m_tool2 = m_toolBar1->AddTool( wxID_ANY, wxT("tool"), wxBitmap( wxT("../../img/delete.bmp"), wxBITMAP_TYPE_ANY ), wxNullBitmap, wxITEM_RADIO, wxEmptyString, wxEmptyString, NULL );
 
 	m_toolBar1->Realize();
 
@@ -34,6 +36,7 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	// Connect Events
 	this->Connect( m_tool1->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::AddMode ) );
+	this->Connect( m_tool2->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::DeleteMode ) );
 	m_panel6->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( frmMain::DrawCircle ), NULL, this );
 }
 
@@ -41,6 +44,7 @@ frmMain::~frmMain()
 {
 	// Disconnect Events
 	this->Disconnect( m_tool1->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::AddMode ) );
+	this->Disconnect( m_tool2->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::DeleteMode ) );
 	m_panel6->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( frmMain::DrawCircle ), NULL, this );
 
 }

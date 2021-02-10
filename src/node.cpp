@@ -2,6 +2,10 @@
 #include <guifrmMain.h>
 #include <gui.h>
 
+Node::Node() : pt(wxPoint(0, 0)), rad(0) {
+    painted = false;
+}
+
 Node::Node(wxPoint pt, wxCoord rad) : pt(pt), rad(rad) 
 {
     painted = false;

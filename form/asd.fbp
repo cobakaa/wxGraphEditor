@@ -123,13 +123,25 @@
                             <property name="bitmap">Load From File; ..\\img\add.bmp</property>
                             <property name="context_menu">0</property>
                             <property name="id">wxID_ANY</property>
-                            <property name="kind">wxITEM_CHECK</property>
+                            <property name="kind">wxITEM_RADIO</property>
                             <property name="label">tool</property>
                             <property name="name">m_tool1</property>
                             <property name="permission">protected</property>
                             <property name="statusbar"></property>
                             <property name="tooltip"></property>
                             <event name="OnToolClicked">AddMode</event>
+                        </object>
+                        <object class="tool" expanded="1">
+                            <property name="bitmap">Load From File; ../img/delete.bmp</property>
+                            <property name="context_menu">0</property>
+                            <property name="id">wxID_ANY</property>
+                            <property name="kind">wxITEM_RADIO</property>
+                            <property name="label">tool</property>
+                            <property name="name">m_tool2</property>
+                            <property name="permission">protected</property>
+                            <property name="statusbar"></property>
+                            <property name="tooltip"></property>
+                            <event name="OnToolClicked">DeleteMode</event>
                         </object>
                     </object>
                 </object>

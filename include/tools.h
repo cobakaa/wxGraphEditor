@@ -4,6 +4,7 @@
 
 enum Mode {
     add,
+    mdelete,
     none
 };
 
