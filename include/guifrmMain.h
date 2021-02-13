@@ -27,6 +27,9 @@ class guifrmMain : public frmMain
 		void GpabCircle( wxMouseEvent& event ) override;
 		void ReposMode( wxCommandEvent& event ) override;
 		void MotionCircle( wxMouseEvent& event ) override;
+		void NewFile( wxCommandEvent& event ) override;
+		void Render( wxSizeEvent& event ) override;
+		void Render( wxMoveEvent& event ) override;
 
 		void Render();
 		void AddCircle(wxPoint pt, wxCoord r);

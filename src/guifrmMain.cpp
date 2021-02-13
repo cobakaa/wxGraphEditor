@@ -4,6 +4,8 @@
 #include "../include/tools.h"
 #include "../include/node.h"
 
+const wxCoord defaultRad = 15;
+
 guifrmMain::guifrmMain( wxWindow* parent )
 :
 frmMain( parent )
@@ -23,7 +25,7 @@ void guifrmMain::DrawCircle(wxMouseEvent &event) {
     switch (mode) {
         case add: 
         {
-            AddCircle(wxPoint(x, y), 15);
+            AddCircle(wxPoint(x, y), defaultRad);
             
             Render();
             break;
@@ -65,14 +67,20 @@ void guifrmMain::DeleteMode( wxCommandEvent& event ) {
     }
 }
 
-void guifrmMain::Render() {
+void guifrmMain::Render() { // добавить отрисовку, сели попадает в область
     // m_panel6->Refresh();
-    m_panel6->Refresh();
+    const wxPoint pt = wxGetMousePosition();
+    wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
+    wxCoord y = pt.y - m_panel6->GetScreenPosition().y;
+    m_panel6->RefreshRect(wxRect(x - 5 * defaultRad, y - 5 * defaultRad, 10 * defaultRad, 10 * defaultRad));
     m_panel6->Update();
+    // m_panel6->ClearBackground();
 
+    wxClientDC dc(m_panel6);
+    
     for (auto& i : nodes) {
         if (i.GetPainted()) {
-            wxClientDC dc(m_panel6);
+            
             dc.DrawCircle(i.GetPoint().x, i.GetPoint().y, i.GetRad());
         }
     }
@@ -124,7 +132,7 @@ void guifrmMain::ReposMode( wxCommandEvent& event ) {
     }
 }
 
-void guifrmMain::GpabCircle( wxMouseEvent& event ) {
+void guifrmMain::GpabCircle( wxMouseEvent& event ) { 
     if (mode == repos && !nodes.empty()) {
         const wxPoint pt = wxGetMousePosition();
         wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
@@ -171,4 +179,17 @@ void guifrmMain::MotionCircle( wxMouseEvent& event ) {
             Render();
         }
     }
+}
+
+void guifrmMain::NewFile( wxCommandEvent& event ) {
+    nodes.clear();
+    m_panel6->ClearBackground();
+}
+
+void guifrmMain::Render( wxSizeEvent& event ) {
+    Render();
+}
+
+void guifrmMain::Render( wxMoveEvent& event ) {
+    Render();
 }

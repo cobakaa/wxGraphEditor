@@ -20,6 +20,7 @@
 #include <wx/settings.h>
 #include <wx/panel.h>
 #include <wx/sizer.h>
+#include <wx/menu.h>
 #include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -38,14 +39,19 @@ class frmMain : public wxFrame
 		wxToolBarToolBase* m_tool2;
 		wxToolBarToolBase* m_tool3;
 		wxPanel* m_panel6;
+		wxMenuBar* m_menubar1;
+		wxMenu* m_menu1;
 
 		// Virtual event handlers, overide them in your derived class
+		virtual void Render( wxMoveEvent& event ) { event.Skip(); }
 		virtual void AddMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void DeleteMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ReposMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void GpabCircle( wxMouseEvent& event ) { event.Skip(); }
 		virtual void DrawCircle( wxMouseEvent& event ) { event.Skip(); }
 		virtual void MotionCircle( wxMouseEvent& event ) { event.Skip(); }
+		virtual void Render( wxSizeEvent& event ) { event.Skip(); }
+		virtual void NewFile( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
