@@ -3,6 +3,7 @@
 #include <wx/wx.h>
 #include "../include/tools.h"
 #include "../include/node.h"
+#include "../include/customDialog.h"
 
 #include <wx/dcbuffer.h>
 
@@ -12,9 +13,10 @@ guifrmMain::guifrmMain( wxWindow* parent )
 :
 frmMain( parent )
 {
-    mode = add;
+    mode = none;
     nodes =  {};
     grabbed_ind = -1;
+    gm = gnone;
 }
 
 
@@ -55,6 +57,12 @@ void guifrmMain::DrawCircle(wxMouseEvent &event) {
                 grabbed_ind = -1;
             }
             break;
+       }
+
+       case none:
+       {
+           Configure();
+           mode = add;
        }
 
     }
@@ -194,6 +202,8 @@ void guifrmMain::MotionCircle( wxMouseEvent& event ) {
 void guifrmMain::NewFile( wxCommandEvent& event ) {
     nodes.clear();
     m_panel6->ClearBackground();
+    Configure();
+    
 }
 
 void guifrmMain::RenderSize( wxSizeEvent& event ) {
@@ -229,4 +239,18 @@ void guifrmMain::NodeZoom( wxMouseEvent& event ) {
 
     m_panel6->Refresh();
     m_panel6->Update();
+}
+
+void guifrmMain::Configure() {
+
+    CustomDialog *custom = new CustomDialog(wxT("Choose graph type"));
+    custom->ShowModal();
+    if (custom->GetGraphMode() == directed) {
+        m_panel6->GetParent()->SetLabel(wxT("Directed graph"));
+        gm = directed;
+    } else if (custom->GetGraphMode() == undirected) {
+        m_panel6->GetParent()->SetLabel(wxT("Undirected graph"));
+        gm = undirected;
+    }
+
 }

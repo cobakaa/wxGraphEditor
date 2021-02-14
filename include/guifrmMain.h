@@ -38,11 +38,15 @@ class guifrmMain : public frmMain
 		void AddCircle(wxPoint pt, wxCoord r);
 		void DeleteCircle(wxPoint p);
 
+		void Configure();
+
+
 	private:
 
 		Mode mode;
 		std::vector<Node> nodes;
 		int grabbed_ind;
+		GraphMode gm;
 
 };
 

@@ -11,6 +11,12 @@ enum Mode {
     none
 };
 
+enum GraphMode {
+    directed, 
+    undirected, 
+    gnone
+};
+
 wxCoord sqr(wxCoord x);
 
 wxCoord min(wxCoord x, wxCoord y);
