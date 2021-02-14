@@ -48,8 +48,10 @@ void guifrmMain::DrawCircle(wxMouseEvent &event) {
 
        case repos:
        {
-            nodes[grabbed_ind].GetGrabbed() = false;
-            grabbed_ind = -1;
+            if (grabbed_ind != -1) {
+                nodes[grabbed_ind].GetGrabbed() = false;
+                grabbed_ind = -1;
+            }
             break;
        }
 
