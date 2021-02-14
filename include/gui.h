@@ -43,14 +43,15 @@ class frmMain : public wxFrame
 		wxMenu* m_menu1;
 
 		// Virtual event handlers, overide them in your derived class
-		virtual void Render( wxMoveEvent& event ) { event.Skip(); }
+		virtual void RenderMove( wxMoveEvent& event ) { event.Skip(); }
 		virtual void AddMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void DeleteMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ReposMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void GpabCircle( wxMouseEvent& event ) { event.Skip(); }
 		virtual void DrawCircle( wxMouseEvent& event ) { event.Skip(); }
 		virtual void MotionCircle( wxMouseEvent& event ) { event.Skip(); }
-		virtual void Render( wxSizeEvent& event ) { event.Skip(); }
+		virtual void RenderPaint( wxPaintEvent& event ) { event.Skip(); }
+		virtual void RenderSize( wxSizeEvent& event ) { event.Skip(); }
 		virtual void NewFile( wxCommandEvent& event ) { event.Skip(); }
 
 

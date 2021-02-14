@@ -28,10 +28,11 @@ class guifrmMain : public frmMain
 		void ReposMode( wxCommandEvent& event ) override;
 		void MotionCircle( wxMouseEvent& event ) override;
 		void NewFile( wxCommandEvent& event ) override;
-		void Render( wxSizeEvent& event ) override;
-		void Render( wxMoveEvent& event ) override;
+		void RenderSize( wxSizeEvent& event ) override;
+		void RenderMove( wxMoveEvent& event ) override;
+		void RenderPaint( wxPaintEvent& event ) override;
+		void OnEraseBackground(wxEraseEvent & event) {};
 
-		void Render();
 		void AddCircle(wxPoint pt, wxCoord r);
 		void DeleteCircle(wxPoint p);
 

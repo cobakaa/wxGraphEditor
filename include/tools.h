@@ -12,4 +12,7 @@ enum Mode {
 
 wxCoord sqr(wxCoord x);
 
+wxCoord min(wxCoord x, wxCoord y);
+wxCoord max(wxCoord x, wxCoord y);
+
 #endif

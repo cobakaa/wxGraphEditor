@@ -4,6 +4,8 @@
 #include "../include/tools.h"
 #include "../include/node.h"
 
+#include <wx/dcbuffer.h>
+
 const wxCoord defaultRad = 15;
 
 guifrmMain::guifrmMain( wxWindow* parent )
@@ -27,7 +29,9 @@ void guifrmMain::DrawCircle(wxMouseEvent &event) {
         {
             AddCircle(wxPoint(x, y), defaultRad);
             
-            Render();
+            // RenderPaint();
+            m_panel6->Refresh();
+            m_panel6->Update();
             break;
        }
 
@@ -36,7 +40,9 @@ void guifrmMain::DrawCircle(wxMouseEvent &event) {
             DeleteCircle(wxPoint(x, y));
 
             // m_panel6->Refresh();
-            Render();
+            // Render();
+            m_panel6->Refresh();
+            m_panel6->Update();
             break;
        }
 
@@ -67,26 +73,20 @@ void guifrmMain::DeleteMode( wxCommandEvent& event ) {
     }
 }
 
-void guifrmMain::Render() { // добавить отрисовку, сели попадает в область
-    // m_panel6->Refresh();
-    const wxPoint pt = wxGetMousePosition();
-    wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
-    wxCoord y = pt.y - m_panel6->GetScreenPosition().y;
-    m_panel6->RefreshRect(wxRect(x - 5 * defaultRad, y - 5 * defaultRad, 10 * defaultRad, 10 * defaultRad));
-    m_panel6->Update();
-    // m_panel6->ClearBackground();
 
-    wxClientDC dc(m_panel6);
-    
+void guifrmMain::RenderPaint( wxPaintEvent& event ) {
+
+    wxPaintDC dc(m_panel6);
+
+
     for (auto& i : nodes) {
         if (i.GetPainted()) {
             
             dc.DrawCircle(i.GetPoint().x, i.GetPoint().y, i.GetRad());
         }
     }
-    
+   
 }
-
 
 void guifrmMain::AddCircle(wxPoint pt, wxCoord r) {
     Node n = Node(pt, r);
@@ -176,7 +176,8 @@ void guifrmMain::MotionCircle( wxMouseEvent& event ) {
                 nodes[grabbed_ind].GetPoint().y = y;
             }
 
-            Render();
+            m_panel6->Refresh();
+            m_panel6->Update();
         }
     }
 }
@@ -186,10 +187,14 @@ void guifrmMain::NewFile( wxCommandEvent& event ) {
     m_panel6->ClearBackground();
 }
 
-void guifrmMain::Render( wxSizeEvent& event ) {
-    Render();
+void guifrmMain::RenderSize( wxSizeEvent& event ) {
+
+    m_panel6->Refresh();
+    m_panel6->Update();
 }
 
-void guifrmMain::Render( wxMoveEvent& event ) {
-    Render();
+void guifrmMain::RenderMove( wxMoveEvent& event ) {
+
+    m_panel6->Refresh();
+    m_panel6->Update();
 }
