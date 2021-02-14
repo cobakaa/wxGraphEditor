@@ -18,7 +18,7 @@
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
-#include <wx/panel.h>
+#include <wx/scrolwin.h>
 #include <wx/sizer.h>
 #include <wx/menu.h>
 #include <wx/frame.h>
@@ -38,7 +38,8 @@ class frmMain : public wxFrame
 		wxToolBarToolBase* m_tool1;
 		wxToolBarToolBase* m_tool2;
 		wxToolBarToolBase* m_tool3;
-		wxPanel* m_panel6;
+		wxToolBarToolBase* m_tool4;
+		wxScrolledWindow* m_panel6;
 		wxMenuBar* m_menubar1;
 		wxMenu* m_menu1;
 
@@ -47,9 +48,11 @@ class frmMain : public wxFrame
 		virtual void AddMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void DeleteMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ReposMode( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ConnectMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void GpabCircle( wxMouseEvent& event ) { event.Skip(); }
 		virtual void DrawCircle( wxMouseEvent& event ) { event.Skip(); }
 		virtual void MotionCircle( wxMouseEvent& event ) { event.Skip(); }
+		virtual void NodeZoom( wxMouseEvent& event ) { event.Skip(); }
 		virtual void RenderPaint( wxPaintEvent& event ) { event.Skip(); }
 		virtual void RenderSize( wxSizeEvent& event ) { event.Skip(); }
 		virtual void NewFile( wxCommandEvent& event ) { event.Skip(); }

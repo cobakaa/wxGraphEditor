@@ -54,7 +54,7 @@
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
             <property name="xrc_skip_sizer">1</property>
-            <event name="OnMove">Render</event>
+            <event name="OnMove">RenderMove</event>
             <object class="wxBoxSizer" expanded="1">
                 <property name="minimum_size"></property>
                 <property name="name">bSizer2</property>
@@ -156,13 +156,25 @@
                             <property name="tooltip"></property>
                             <event name="OnToolClicked">ReposMode</event>
                         </object>
+                        <object class="tool" expanded="1">
+                            <property name="bitmap">Load From File; ../img/connect.bmp</property>
+                            <property name="context_menu">0</property>
+                            <property name="id">wxID_ANY</property>
+                            <property name="kind">wxITEM_RADIO</property>
+                            <property name="label">tool</property>
+                            <property name="name">m_tool4</property>
+                            <property name="permission">protected</property>
+                            <property name="statusbar"></property>
+                            <property name="tooltip"></property>
+                            <event name="OnToolClicked">ConnectMode</event>
+                        </object>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
                     <property name="border">5</property>
                     <property name="flag">wxEXPAND | wxALL</property>
                     <property name="proportion">1</property>
-                    <object class="wxPanel" expanded="1">
+                    <object class="wxScrolledWindow" expanded="1">
                         <property name="BottomDockable">1</property>
                         <property name="LeftDockable">1</property>
                         <property name="RightDockable">1</property>
@@ -205,6 +217,8 @@
                         <property name="pin_button">1</property>
                         <property name="pos"></property>
                         <property name="resize">Resizable</property>
+                        <property name="scroll_rate_x">5</property>
+                        <property name="scroll_rate_y">5</property>
                         <property name="show">1</property>
                         <property name="size"></property>
                         <property name="subclass">; ; forward_declare</property>
@@ -212,11 +226,13 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
-                        <property name="window_style">wxTAB_TRAVERSAL</property>
+                        <property name="window_style">wxALWAYS_SHOW_SB|wxHSCROLL|wxTAB_TRAVERSAL|wxVSCROLL</property>
                         <event name="OnLeftDown">GpabCircle</event>
                         <event name="OnLeftUp">DrawCircle</event>
                         <event name="OnMotion">MotionCircle</event>
-                        <event name="OnSize">Render</event>
+                        <event name="OnMouseWheel">NodeZoom</event>
+                        <event name="OnPaint">RenderPaint</event>
+                        <event name="OnSize">RenderSize</event>
                     </object>
                 </object>
             </object>

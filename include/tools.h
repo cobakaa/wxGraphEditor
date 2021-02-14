@@ -7,6 +7,7 @@ enum Mode {
     add,
     mdelete,
     repos,
+    mconnect,
     none
 };
 

@@ -32,6 +32,8 @@ class guifrmMain : public frmMain
 		void RenderMove( wxMoveEvent& event ) override;
 		void RenderPaint( wxPaintEvent& event ) override;
 		void OnEraseBackground(wxEraseEvent & event) {};
+		void NodeZoom( wxMouseEvent& event ) override;
+		void ConnectMode( wxCommandEvent& event ) override;
 
 		void AddCircle(wxPoint pt, wxCoord r);
 		void DeleteCircle(wxPoint p);

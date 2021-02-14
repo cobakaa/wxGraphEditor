@@ -6,7 +6,7 @@
 
 #include <wx/dcbuffer.h>
 
-const wxCoord defaultRad = 15;
+wxCoord defaultRad = 15;
 
 guifrmMain::guifrmMain( wxWindow* parent )
 :
@@ -23,6 +23,8 @@ void guifrmMain::DrawCircle(wxMouseEvent &event) {
     const wxPoint pt = wxGetMousePosition();
     wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
     wxCoord y = pt.y - m_panel6->GetScreenPosition().y;
+
+    m_panel6->CalcUnscrolledPosition(x, y, &x, &y);
 
     switch (mode) {
         case add: 
@@ -80,11 +82,12 @@ void guifrmMain::RenderPaint( wxPaintEvent& event ) {
 
     wxPaintDC dc(m_panel6);
 
+    wxCoord x, y;
 
     for (auto& i : nodes) {
         if (i.GetPainted()) {
-            
-            dc.DrawCircle(i.GetPoint().x, i.GetPoint().y, i.GetRad());
+            m_panel6->CalcScrolledPosition(i.GetPoint().x, i.GetPoint().y, &x, &y);
+            dc.DrawCircle(x, y, i.GetRad());
         }
     }
    
@@ -140,6 +143,8 @@ void guifrmMain::GpabCircle( wxMouseEvent& event ) {
         wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
         wxCoord y = pt.y - m_panel6->GetScreenPosition().y;
 
+        m_panel6->CalcUnscrolledPosition(x, y, &x, &y);
+
         int cnt = 0;
 
         for (auto& i : nodes) {
@@ -162,6 +167,8 @@ void guifrmMain::MotionCircle( wxMouseEvent& event ) {
         const wxPoint pt = wxGetMousePosition();
         wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
         wxCoord y = pt.y - m_panel6->GetScreenPosition().y;
+
+        m_panel6->CalcUnscrolledPosition(x, y, &x, &y);
 
         bool inter = false;
         if (grabbed_ind != -1) {
@@ -196,6 +203,29 @@ void guifrmMain::RenderSize( wxSizeEvent& event ) {
 }
 
 void guifrmMain::RenderMove( wxMoveEvent& event ) {
+
+    m_panel6->Refresh();
+    m_panel6->Update();
+}
+
+void guifrmMain::ConnectMode( wxCommandEvent& event ) {
+    if (mode == mconnect) {
+        mode = none;
+    } else {
+        mode = mconnect;
+    }
+}
+
+void guifrmMain::NodeZoom( wxMouseEvent& event ) {
+    wxCoord lines = event.GetWheelRotation() / event.GetWheelDelta();
+
+    if (defaultRad + lines > 0) {
+        defaultRad += lines;
+    }
+
+    for (auto& i : nodes) {
+        i.GetRad() = defaultRad;
+    }
 
     m_panel6->Refresh();
     m_panel6->Update();

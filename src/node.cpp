@@ -17,7 +17,7 @@ wxPoint& Node::GetPoint() {
     return pt;
 }
 
-wxCoord Node::GetRad() {
+wxCoord& Node::GetRad() {
     return rad;
 }
 

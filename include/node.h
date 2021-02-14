@@ -10,7 +10,7 @@ class Node
         Node();
         Node(wxPoint pt, wxCoord rad);
         wxPoint& GetPoint();
-        wxCoord GetRad();
+        wxCoord& GetRad();
         bool& GetPainted();
         bool& GetGrabbed();
 
