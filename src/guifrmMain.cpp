@@ -102,39 +102,15 @@ void guifrmMain::RenderPaint( wxPaintEvent& event ) {
 }
 
 void guifrmMain::AddCircle(wxPoint pt, wxCoord r) {
-    Node n = Node(pt, r);
-    bool noInter = true;
-    
-    for (auto& i : graph.GetNodes()) {
-        if (i.GetPainted() && (sqr(i.GetRad() + n.GetRad()) >= sqr(i.GetPoint().x - n.GetPoint().x) + sqr(i.GetPoint().y - n.GetPoint().y))) { // intersection
-            noInter = false;
-            break;
-        }
-    }
 
-    if (noInter) {
-        n.GetPainted() = true;
-        graph.GetNodes().push_back(n);
+    if (!graph.HaveIntersection(pt, r)) {
+        graph.AddNode(Node(pt, r));
     }
 }
 
 
 void guifrmMain::DeleteCircle(wxPoint pt) {
-    int cnt = 0;
-    bool getInter = false;
-
-    for (auto& i : graph.GetNodes()) {
-        if (i.GetPainted() && (sqr(i.GetRad()) > sqr(i.GetPoint().x - pt.x) + sqr(i.GetPoint().y - pt.y))) { // intersection
-                // i.GetPainted() = false;
-            getInter = true;
-            break;
-        }
-        cnt++;
-    }
-            
-    if (!graph.GetNodes().empty() && getInter) {
-        graph.GetNodes().erase(graph.GetNodes().begin() + cnt);
-    }
+    graph.DeleteNode(pt);
 }
 
 void guifrmMain::ReposMode( wxCommandEvent& event ) {
