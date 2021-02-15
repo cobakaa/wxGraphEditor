@@ -14,7 +14,7 @@ guifrmMain::guifrmMain( wxWindow* parent )
 frmMain( parent )
 {
     mode = none;
-    nodes =  {};
+    graph = Graph();
     grabbed_ind = -1;
     gm = gnone;
 }
@@ -53,7 +53,7 @@ void guifrmMain::DrawCircle(wxMouseEvent &event) {
        case repos:
        {
             if (grabbed_ind != -1) {
-                nodes[grabbed_ind].GetGrabbed() = false;
+                graph.GetNodes()[grabbed_ind].GetGrabbed() = false;
                 grabbed_ind = -1;
             }
             break;
@@ -92,7 +92,7 @@ void guifrmMain::RenderPaint( wxPaintEvent& event ) {
 
     wxCoord x, y;
 
-    for (auto& i : nodes) {
+    for (auto& i : graph.GetNodes()) {
         if (i.GetPainted()) {
             m_panel6->CalcScrolledPosition(i.GetPoint().x, i.GetPoint().y, &x, &y);
             dc.DrawCircle(x, y, i.GetRad());
@@ -105,7 +105,7 @@ void guifrmMain::AddCircle(wxPoint pt, wxCoord r) {
     Node n = Node(pt, r);
     bool noInter = true;
     
-    for (auto& i : nodes) {
+    for (auto& i : graph.GetNodes()) {
         if (i.GetPainted() && (sqr(i.GetRad() + n.GetRad()) >= sqr(i.GetPoint().x - n.GetPoint().x) + sqr(i.GetPoint().y - n.GetPoint().y))) { // intersection
             noInter = false;
             break;
@@ -114,7 +114,7 @@ void guifrmMain::AddCircle(wxPoint pt, wxCoord r) {
 
     if (noInter) {
         n.GetPainted() = true;
-        nodes.push_back(n);
+        graph.GetNodes().push_back(n);
     }
 }
 
@@ -123,7 +123,7 @@ void guifrmMain::DeleteCircle(wxPoint pt) {
     int cnt = 0;
     bool getInter = false;
 
-    for (auto& i : nodes) {
+    for (auto& i : graph.GetNodes()) {
         if (i.GetPainted() && (sqr(i.GetRad()) > sqr(i.GetPoint().x - pt.x) + sqr(i.GetPoint().y - pt.y))) { // intersection
                 // i.GetPainted() = false;
             getInter = true;
@@ -132,8 +132,8 @@ void guifrmMain::DeleteCircle(wxPoint pt) {
         cnt++;
     }
             
-    if (!nodes.empty() && getInter) {
-        nodes.erase(nodes.begin() + cnt);
+    if (!graph.GetNodes().empty() && getInter) {
+        graph.GetNodes().erase(graph.GetNodes().begin() + cnt);
     }
 }
 
@@ -146,27 +146,30 @@ void guifrmMain::ReposMode( wxCommandEvent& event ) {
 }
 
 void guifrmMain::GpabCircle( wxMouseEvent& event ) { 
-    if (mode == repos && !nodes.empty()) {
-        const wxPoint pt = wxGetMousePosition();
-        wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
-        wxCoord y = pt.y - m_panel6->GetScreenPosition().y;
 
-        m_panel6->CalcUnscrolledPosition(x, y, &x, &y);
+    const wxPoint pt = wxGetMousePosition();
+    wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
+    wxCoord y = pt.y - m_panel6->GetScreenPosition().y;
+
+    m_panel6->CalcUnscrolledPosition(x, y, &x, &y);
+
+    if (mode == repos && !graph.GetNodes().empty()) {
+        
 
         int cnt = 0;
 
-        for (auto& i : nodes) {
+        for (auto& i : graph.GetNodes()) {
             if (i.GetPainted() && (sqr(i.GetRad()) > sqr(i.GetPoint().x - x) + sqr(i.GetPoint().y - y))) { // intersection
                     // i.GetPainted() = false;
                 break;
             }
             cnt++;
         }
-
-        
             grabbed_ind = cnt;
-            nodes[grabbed_ind].GetGrabbed() = true;
+            graph.GetNodes()[grabbed_ind].GetGrabbed() = true;
     }
+
+
 }
 
 void guifrmMain::MotionCircle( wxMouseEvent& event ) {
@@ -180,7 +183,7 @@ void guifrmMain::MotionCircle( wxMouseEvent& event ) {
 
         bool inter = false;
         if (grabbed_ind != -1) {
-            for (auto& i : nodes) {
+            for (auto& i : graph.GetNodes()) {
                 if (!i.GetGrabbed() && (sqr(i.GetPoint().x - x) + sqr(i.GetPoint().y - y) < 
                 sqr(i.GetRad() * 2))) {
                     inter = true;
@@ -189,8 +192,8 @@ void guifrmMain::MotionCircle( wxMouseEvent& event ) {
             }
 
             if (!inter) {
-                nodes[grabbed_ind].GetPoint().x = x;
-                nodes[grabbed_ind].GetPoint().y = y;
+                graph.GetNodes()[grabbed_ind].GetPoint().x = x;
+                graph.GetNodes()[grabbed_ind].GetPoint().y = y;
             }
 
             m_panel6->Refresh();
@@ -200,7 +203,7 @@ void guifrmMain::MotionCircle( wxMouseEvent& event ) {
 }
 
 void guifrmMain::NewFile( wxCommandEvent& event ) {
-    nodes.clear();
+    graph.GetNodes().clear();
     m_panel6->ClearBackground();
     Configure();
     
@@ -233,7 +236,7 @@ void guifrmMain::NodeZoom( wxMouseEvent& event ) {
         defaultRad += lines;
     }
 
-    for (auto& i : nodes) {
+    for (auto& i : graph.GetNodes()) {
         i.GetRad() = defaultRad;
     }
 
