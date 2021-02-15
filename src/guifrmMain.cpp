@@ -20,7 +20,7 @@ frmMain( parent )
 }
 
 
-void guifrmMain::DrawCircle(wxMouseEvent &event) {
+void guifrmMain::OnLMouseUP(wxMouseEvent &event) {
 
     const wxPoint pt = wxGetMousePosition();
     wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
@@ -145,7 +145,7 @@ void guifrmMain::ReposMode( wxCommandEvent& event ) {
     }
 }
 
-void guifrmMain::GpabCircle( wxMouseEvent& event ) { 
+void guifrmMain::OnLMouseDOWN( wxMouseEvent& event ) { 
 
     const wxPoint pt = wxGetMousePosition();
     wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
@@ -172,7 +172,7 @@ void guifrmMain::GpabCircle( wxMouseEvent& event ) {
 
 }
 
-void guifrmMain::MotionCircle( wxMouseEvent& event ) {
+void guifrmMain::OnMouseMove( wxMouseEvent& event ) {
     
     if (mode == repos) {
         const wxPoint pt = wxGetMousePosition();

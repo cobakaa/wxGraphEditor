@@ -12,13 +12,13 @@ CustomDialog::CustomDialog(const wxString & title)
 
   wxStaticBox *st = new wxStaticBox(panel, -1, wxT("Type"), 
       wxPoint(5, 5), wxSize(240, 150));
-  wxRadioButton *rb = new wxRadioButton(panel, 2, 
+  rb = new wxRadioButton(panel, -1, 
       wxT("Directed graph"), wxPoint(25, 55), wxDefaultSize, wxRB_GROUP);
 
-  wxRadioButton *rb1 = new wxRadioButton(panel, 3, 
+ rb1 = new wxRadioButton(panel, -1, 
       wxT("Undirected graph"), wxPoint(25, 85));
 
-  wxButton *okButton = new wxButton(this, 1, wxT("Ok"), 
+  okButton = new wxButton(this, -1, wxT("Ok"), 
       wxDefaultPosition, wxSize(70, 30));
 
 
@@ -29,14 +29,20 @@ CustomDialog::CustomDialog(const wxString & title)
 
   SetSizer(vbox);
 
-  Connect(1, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(CustomDialog::OnOkClicked));
-  Connect(2, wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler(CustomDialog::OnDir));
-  Connect(3, wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler(CustomDialog::OnUndir));
+  this->Connect(okButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(CustomDialog::OnOkClicked));
+  this->Connect(rb->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler(CustomDialog::OnDir));
+  this->Connect(rb1->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler(CustomDialog::OnUndir));
 
   Centre();
   ShowModal();
 
-  Destroy(); 
+   Destroy(); 
+}
+
+CustomDialog::~CustomDialog() {
+    this->Disconnect(okButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(CustomDialog::OnOkClicked));
+    this->Disconnect(rb->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler(CustomDialog::OnDir));
+    this->Disconnect(rb1->GetId(), wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler(CustomDialog::OnUndir));
 }
 
 GraphMode CustomDialog::GetGraphMode() {

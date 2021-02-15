@@ -49,9 +49,9 @@ class frmMain : public wxFrame
 		virtual void DeleteMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ReposMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ConnectMode( wxCommandEvent& event ) { event.Skip(); }
-		virtual void GpabCircle( wxMouseEvent& event ) { event.Skip(); }
-		virtual void DrawCircle( wxMouseEvent& event ) { event.Skip(); }
-		virtual void MotionCircle( wxMouseEvent& event ) { event.Skip(); }
+		virtual void OnLMouseDOWN( wxMouseEvent& event ) { event.Skip(); }
+		virtual void OnLMouseUP( wxMouseEvent& event ) { event.Skip(); }
+		virtual void OnMouseMove( wxMouseEvent& event ) { event.Skip(); }
 		virtual void NodeZoom( wxMouseEvent& event ) { event.Skip(); }
 		virtual void RenderPaint( wxPaintEvent& event ) { event.Skip(); }
 		virtual void RenderSize( wxSizeEvent& event ) { event.Skip(); }

@@ -62,9 +62,9 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	this->Connect( m_tool2->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::DeleteMode ) );
 	this->Connect( m_tool3->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::ReposMode ) );
 	this->Connect( m_tool4->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::ConnectMode ) );
-	m_panel6->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( frmMain::GpabCircle ), NULL, this );
-	m_panel6->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( frmMain::DrawCircle ), NULL, this );
-	m_panel6->Connect( wxEVT_MOTION, wxMouseEventHandler( frmMain::MotionCircle ), NULL, this );
+	m_panel6->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( frmMain::OnLMouseDOWN ), NULL, this );
+	m_panel6->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( frmMain::OnLMouseUP ), NULL, this );
+	m_panel6->Connect( wxEVT_MOTION, wxMouseEventHandler( frmMain::OnMouseMove ), NULL, this );
 	m_panel6->Connect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( frmMain::NodeZoom ), NULL, this );
 	m_panel6->Connect( wxEVT_PAINT, wxPaintEventHandler( frmMain::RenderPaint ), NULL, this );
 	m_panel6->Connect( wxEVT_SIZE, wxSizeEventHandler( frmMain::RenderSize ), NULL, this );
@@ -79,9 +79,9 @@ frmMain::~frmMain()
 	this->Disconnect( m_tool2->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::DeleteMode ) );
 	this->Disconnect( m_tool3->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::ReposMode ) );
 	this->Disconnect( m_tool4->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::ConnectMode ) );
-	m_panel6->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( frmMain::GpabCircle ), NULL, this );
-	m_panel6->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( frmMain::DrawCircle ), NULL, this );
-	m_panel6->Disconnect( wxEVT_MOTION, wxMouseEventHandler( frmMain::MotionCircle ), NULL, this );
+	m_panel6->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( frmMain::OnLMouseDOWN ), NULL, this );
+	m_panel6->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( frmMain::OnLMouseUP ), NULL, this );
+	m_panel6->Disconnect( wxEVT_MOTION, wxMouseEventHandler( frmMain::OnMouseMove ), NULL, this );
 	m_panel6->Disconnect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( frmMain::NodeZoom ), NULL, this );
 	m_panel6->Disconnect( wxEVT_PAINT, wxPaintEventHandler( frmMain::RenderPaint ), NULL, this );
 	m_panel6->Disconnect( wxEVT_SIZE, wxSizeEventHandler( frmMain::RenderSize ), NULL, this );

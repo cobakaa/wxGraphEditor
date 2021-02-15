@@ -22,12 +22,12 @@ class guifrmMain : public frmMain
 		guifrmMain( wxWindow* parent );
 	//// end generated class members
 
-	    void DrawCircle(wxMouseEvent &event) override;
+	    void OnLMouseUP(wxMouseEvent &event) override;
 		void AddMode( wxCommandEvent& event ) override;
 		void DeleteMode( wxCommandEvent& event ) override;
-		void GpabCircle( wxMouseEvent& event ) override;
+		void OnLMouseDOWN( wxMouseEvent& event ) override;
 		void ReposMode( wxCommandEvent& event ) override;
-		void MotionCircle( wxMouseEvent& event ) override;
+		void OnMouseMove( wxMouseEvent& event ) override;
 		void NewFile( wxCommandEvent& event ) override;
 		void RenderSize( wxSizeEvent& event ) override;
 		void RenderMove( wxMoveEvent& event ) override;

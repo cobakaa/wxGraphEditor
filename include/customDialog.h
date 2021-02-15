@@ -16,8 +16,15 @@ public:
 
   GraphMode GetGraphMode();
 
+  ~CustomDialog();
+
 private:
     GraphMode gmode = directed;
+
+protected:
+  wxRadioButton *rb;
+  wxRadioButton *rb1;
+  wxButton *okButton;
 
 };
 
