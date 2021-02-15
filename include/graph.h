@@ -21,6 +21,8 @@ class Graph {
         void DeleteNode(wxPoint pt);
         int GetIntersectionInd(wxPoint pt);
 
+        void Clear();
+
 
 
     private:

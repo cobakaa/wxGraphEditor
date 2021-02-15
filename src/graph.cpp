@@ -9,7 +9,28 @@ Graph::Graph() {
 }
 
 std::vector<std::vector<int>> Graph::BuildConnMatrix() {
-    return {{}};
+    std::vector<std::vector<int>> matrix;
+
+    matrix.resize(nodes.size());
+
+    for (auto& i : matrix) {
+        i.resize(nodes.size());
+    }
+
+    for (int i = 0; i < nodes.size(); ++i) {
+        for (int j = 0; j < nodes.size(); j++) {
+            matrix[i][j] = 0;
+        }
+    }
+
+    for (auto& i : arcs) {
+        matrix[i.first][i.second] = 1;
+        if (gm == undirected) {
+            matrix[i.second][i.first] = 1;
+        }
+    }
+
+    return matrix;
 }
 
 Graph::Graph(std::vector<Node> nodes, std::vector<std::pair<int, int>> arcs) {
@@ -24,11 +45,11 @@ std::vector<Node>& Graph::GetNodes() {
 }
 
 bool Graph::HaveIntersection(wxPoint pt, wxCoord r) {
-    Node n = Node(pt, r);
+    // Node n = Node(pt, r);
     bool inter = false;
 
     for (auto& i : nodes) {
-        if (i.GetPainted() && (sqr(i.GetRad() + n.GetRad()) >= sqr(i.GetPoint().x - n.GetPoint().x) + sqr(i.GetPoint().y - n.GetPoint().y))) { // intersection
+        if (i.GetPainted() && !i.GetGrabbed() && (sqr(i.GetRad() + r) >= sqr(i.GetPoint().x - pt.x) + sqr(i.GetPoint().y - pt.y))) { // intersection
             inter = true;
             break;
         }
@@ -40,7 +61,8 @@ bool Graph::HaveIntersection(wxPoint pt, wxCoord r) {
 void Graph::AddNode(Node n) {
     n.GetPainted() = true;
     nodes.push_back(n);
-    //add building matrix
+    connectivity_matrix = BuildConnMatrix();
+
 }
 
 int Graph::GetIntersectionInd(wxPoint pt) {
@@ -66,5 +88,25 @@ void Graph::DeleteNode(wxPoint pt) {
         nodes.erase(nodes.begin() + cnt);
     }
 
+    std::vector<int> del;
+
+    for (int i = 0; i < arcs.size(); ++i) {
+        if (arcs[i].first == cnt || arcs[i].second == cnt) {
+            del.push_back(i);
+        }
+    }
+
+    for (int i = 0; i < del.size(); ++i) {
+        arcs.erase(arcs.begin() + del[i]);
+    }
+
+    connectivity_matrix = BuildConnMatrix();
     //add building matrix
+}
+
+void Graph::Clear() {
+    nodes.clear();
+    arcs.clear();
+    gm = gnone;
+    connectivity_matrix.clear();
 }

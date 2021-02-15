@@ -131,17 +131,7 @@ void guifrmMain::OnLMouseDOWN( wxMouseEvent& event ) {
 
     if (mode == repos && !graph.GetNodes().empty()) {
         
-
-        int cnt = 0;
-
-        for (auto& i : graph.GetNodes()) {
-            if (i.GetPainted() && (sqr(i.GetRad()) > sqr(i.GetPoint().x - x) + sqr(i.GetPoint().y - y))) { // intersection
-                    // i.GetPainted() = false;
-                break;
-            }
-            cnt++;
-        }
-            grabbed_ind = cnt;
+            grabbed_ind = graph.GetIntersectionInd(wxPoint(x, y));
             graph.GetNodes()[grabbed_ind].GetGrabbed() = true;
     }
 
@@ -157,17 +147,9 @@ void guifrmMain::OnMouseMove( wxMouseEvent& event ) {
 
         m_panel6->CalcUnscrolledPosition(x, y, &x, &y);
 
-        bool inter = false;
         if (grabbed_ind != -1) {
-            for (auto& i : graph.GetNodes()) {
-                if (!i.GetGrabbed() && (sqr(i.GetPoint().x - x) + sqr(i.GetPoint().y - y) < 
-                sqr(i.GetRad() * 2))) {
-                    inter = true;
-                    break;
-                }
-            }
 
-            if (!inter) {
+            if (!graph.HaveIntersection(wxPoint(x, y), defaultRad)) {
                 graph.GetNodes()[grabbed_ind].GetPoint().x = x;
                 graph.GetNodes()[grabbed_ind].GetPoint().y = y;
             }
