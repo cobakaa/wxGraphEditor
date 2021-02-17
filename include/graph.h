@@ -20,8 +20,15 @@ class Graph {
         void AddNode(Node n);
         void DeleteNode(wxPoint pt);
         int GetIntersectionInd(wxPoint pt);
+        void AddConnection();
+        void AddArc(int x, int y);
+
+        const std::vector<std::pair<int, int>>& GetArcs();
+        const std::vector<std::vector<int>>& GetConnMatrix();
 
         void Clear();
+
+        bool Empty();
 
 
 

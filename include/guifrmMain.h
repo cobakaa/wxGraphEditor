@@ -47,6 +47,8 @@ class guifrmMain : public frmMain
 		Mode mode;
 		Graph graph;
 		int grabbed_ind;
+		// int grabbed_ind_con;
+		wxPoint line_end;
 		GraphMode gm;
 
 };

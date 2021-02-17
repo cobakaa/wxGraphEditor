@@ -84,22 +84,31 @@ void Graph::DeleteNode(wxPoint pt) {
     
     int cnt = GetIntersectionInd(pt);
 
-    if (!nodes.empty() && (cnt >= 0)) {
-        nodes.erase(nodes.begin() + cnt);
-    }
 
-    std::vector<int> del;
+    if (cnt >= 0) {
+        
+        for (auto it = arcs.begin(); it != arcs.end();) {
+            if ((*it).first == cnt || (*it).second == cnt) {
+                it = arcs.erase(it);
+            } else {
+                it++;
+            }
+        }
 
-    for (int i = 0; i < arcs.size(); ++i) {
-        if (arcs[i].first == cnt || arcs[i].second == cnt) {
-            del.push_back(i);
+
+        if (!nodes.empty()) {
+            nodes.erase(nodes.begin() + cnt);
+        }
+
+        for (auto it = arcs.begin(); it != arcs.end(); it++) {
+            if ((*it).first > cnt) {
+                (*it).first -= 1;
+            }
+            if ((*it).second > cnt) {
+                (*it).second -= 1;
+            }
         }
     }
-
-    for (int i = 0; i < del.size(); ++i) {
-        arcs.erase(arcs.begin() + del[i]);
-    }
-
     connectivity_matrix = BuildConnMatrix();
     //add building matrix
 }
@@ -109,4 +118,34 @@ void Graph::Clear() {
     arcs.clear();
     gm = gnone;
     connectivity_matrix.clear();
+}
+
+bool Graph::Empty() {
+    return nodes.empty();
+}
+
+void Graph::AddArc(int x, int y) {
+
+    std::pair<int, int> p = std::make_pair(x, y);
+    bool exists = false;
+
+    for (auto it = arcs.begin(); it != arcs.end(); it++) {
+        if (*it == p) {
+            exists = true;
+            break;
+        }
+    }
+
+    if (!exists) {
+        arcs.push_back(p);
+    }
+    
+}
+
+const std::vector<std::pair<int, int>>& Graph::GetArcs() {
+    return arcs;
+}
+
+const std::vector<std::vector<int>>& Graph::GetConnMatrix() {
+    return connectivity_matrix;
 }
