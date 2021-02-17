@@ -1,5 +1,7 @@
 #include "../include/graph.h"
 
+#include <iostream>
+
 Graph::Graph() {
     nodes = {};
     arcs = {};
@@ -29,6 +31,14 @@ std::vector<std::vector<int>> Graph::BuildConnMatrix() {
             matrix[i.second][i.first] = 1;
         }
     }
+
+    for (int i = 0; i < matrix.size(); ++i) {
+        for (int j = 0; j < matrix.size(); ++j) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << '\n';
+    }
+    std::cout << '\n';
 
     return matrix;
 }
@@ -108,8 +118,10 @@ void Graph::DeleteNode(wxPoint pt) {
                 (*it).second -= 1;
             }
         }
+
+        connectivity_matrix = BuildConnMatrix();
     }
-    connectivity_matrix = BuildConnMatrix();
+    
     //add building matrix
 }
 
@@ -139,6 +151,8 @@ void Graph::AddArc(int x, int y) {
     if (!exists) {
         arcs.push_back(p);
     }
+
+    connectivity_matrix = BuildConnMatrix();
     
 }
 
@@ -148,4 +162,8 @@ const std::vector<std::pair<int, int>>& Graph::GetArcs() {
 
 const std::vector<std::vector<int>>& Graph::GetConnMatrix() {
     return connectivity_matrix;
+}
+
+GraphMode& Graph::GetGraphMode() {
+    return gm;
 }

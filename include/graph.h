@@ -26,6 +26,8 @@ class Graph {
         const std::vector<std::pair<int, int>>& GetArcs();
         const std::vector<std::vector<int>>& GetConnMatrix();
 
+        GraphMode& GetGraphMode();
+
         void Clear();
 
         bool Empty();

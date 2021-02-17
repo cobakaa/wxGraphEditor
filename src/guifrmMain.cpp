@@ -16,7 +16,6 @@ frmMain( parent )
     mode = none;
     graph = Graph();
     grabbed_ind = -1;
-    gm = gnone;
     line_end = wxPoint(-1, -1);
 }
 
@@ -141,11 +140,9 @@ void guifrmMain::RenderPaint( wxPaintEvent& event ) {
 
         end.x = z - defaultRad * cosa;
         end.y = w - defaultRad * sina;
-
         
-        dc.DrawLine(start, end);
 
-        if (gm == directed) {
+        if (graph.GetGraphMode() == directed) {
 
             wxPoint first, second;
 
@@ -164,14 +161,91 @@ void guifrmMain::RenderPaint( wxPaintEvent& event ) {
             //     second.y = end.y - defaultRad * sin(asin(sina) - M_PI / 6);
             // }
 
-            first.x = end.x - defaultRad / 2 * cosa + defaultRad / 3 * sina;
-            first.y = end.y - defaultRad / 2 * sina - defaultRad / 3 * cosa;
+            if (graph.GetConnMatrix().at(i.first).at(i.second) * graph.GetConnMatrix().at(i.second).at(i.first) != 0) {
+                    
+                double ang = M_PI / 8;
 
-            second.x = end.x - defaultRad / 2 * cosa - defaultRad / 3 * sina;
-            second.y = end.y - defaultRad / 2 * sina + defaultRad / 3 * cosa;
+                if (i.first > i.second) {
 
-            dc.DrawLine(end, first);
-            dc.DrawLine(end, second);
+                    start.x = x + defaultRad * cos(acos(cosa) + ang);
+
+                    if (graph.GetNodes()[i.first].GetPoint().y > graph.GetNodes()[i.second].GetPoint().y) {
+                        start.y = y - defaultRad * sin(M_PI / 2 - asin(cosa) + ang);
+                        end.y = w + defaultRad * sin(M_PI / 2 - asin(cosa) - ang);
+                    } else {
+                        start.y = y + defaultRad * sin(acos(cosa) + ang);
+                        end.y = w - defaultRad * sin(acos(cosa) - ang);
+                    }
+
+                    end.x = z - defaultRad * cos(acos(cosa) - ang);
+                    
+
+                    // double cosb = (end.x - start.x) / sqrt(sqr(end.x - start.x) + sqr(end.y - start.y));
+                    // double sinb = (end.y - start.y) / sqrt(sqr(end.x - start.x) + sqr(end.y - start.y));
+
+                    // start.x = start.x + defaultRad
+                
+                    dc.DrawLine(start, end);
+                    // dc.DrawLine(x, y, z, w);
+
+
+                    first.x = end.x - defaultRad / 2 * cosa + defaultRad / 3 * sina;
+                    first.y = end.y - defaultRad / 2 * sina - defaultRad / 3 * cosa;
+
+                    second.x = end.x - defaultRad / 2 * cosa - defaultRad / 3 * sina;
+                    second.y = end.y - defaultRad / 2 * sina + defaultRad / 3 * cosa;
+
+                    dc.DrawLine(end, first);
+                    dc.DrawLine(end, second);
+
+                } else if (i.first < i.second) {
+
+                    start.x = x + defaultRad * cos(acos(cosa) - ang);
+
+                    if (graph.GetNodes()[i.first].GetPoint().y < graph.GetNodes()[i.second].GetPoint().y) {
+                        start.y = y + defaultRad * sin(M_PI / 2 - asin(cosa) - ang);
+                        end.y = w - defaultRad * sin(M_PI / 2 - asin(cosa) + ang);
+
+                    } else {
+                        start.y = y - defaultRad * sin(acos(cosa) - ang);
+                        end.y = w + defaultRad * sin(acos(cosa) + ang);
+                    }
+
+                    end.x = z - defaultRad * cos(acos(cosa) + ang); 
+                    
+                    dc.DrawLine(start, end);
+                    // dc.DrawLine(x, y, z, w);
+
+                    first.x = end.x - defaultRad / 2 * cosa + defaultRad / 3 * sina;
+                    first.y = end.y - defaultRad / 2 * sina - defaultRad / 3 * cosa;
+
+                    second.x = end.x - defaultRad / 2 * cosa - defaultRad / 3 * sina;
+                    second.y = end.y - defaultRad / 2 * sina + defaultRad / 3 * cosa;
+
+                    dc.DrawLine(end, first);
+                    dc.DrawLine(end, second);
+                } else {
+                    //
+                }
+
+                
+            } else {
+                
+                dc.DrawLine(start, end);
+
+                first.x = end.x - defaultRad / 2 * cosa + defaultRad / 3 * sina;
+                first.y = end.y - defaultRad / 2 * sina - defaultRad / 3 * cosa;
+
+                second.x = end.x - defaultRad / 2 * cosa - defaultRad / 3 * sina;
+                second.y = end.y - defaultRad / 2 * sina + defaultRad / 3 * cosa;
+
+                dc.DrawLine(end, first);
+                dc.DrawLine(end, second);
+            }
+
+        } else if (graph.GetGraphMode() == undirected) {
+                
+            dc.DrawLine(start, end);
         }
     }
 
@@ -303,10 +377,10 @@ void guifrmMain::Configure() {
     custom->ShowModal();
     if (custom->GetGraphMode() == directed) {
         m_panel6->GetParent()->SetLabel(wxT("Directed graph"));
-        gm = directed;
+        graph.GetGraphMode() = directed;
     } else if (custom->GetGraphMode() == undirected) {
         m_panel6->GetParent()->SetLabel(wxT("Undirected graph"));
-        gm = undirected;
+        graph.GetGraphMode() = undirected;
     }
 
 }
