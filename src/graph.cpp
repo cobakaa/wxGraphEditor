@@ -52,7 +52,7 @@ Graph::Graph(std::vector<Node> nodes, std::vector<std::pair<int, int>> arcs) {
     gm = gnone;
 }
 
-std::vector<Node>& Graph::GetNodes() {
+wxVector<Node>& Graph::GetNodes() {
     return nodes;
 }
 
@@ -76,12 +76,10 @@ void Graph::AddNode(wxPoint pt, wxCoord r) {
 
     std::cout << nodes.capacity() << std::endl;
 
-    try{
-        nodes.push_back(Node(pt, r));
-    } catch(const std::exception& err) {
-        std::cout << err.what() << std::endl;
-        std::cout << "PUSHING ERROR" << std::endl;
-    }
+    Node n = Node(pt, r);
+
+    nodes.push_back(n);
+    
     
     std::cout << "PUSHED" << std::endl;
     std::cout << nodes.capacity() << std::endl;
@@ -141,6 +139,10 @@ void Graph::DeleteNode(wxPoint pt) {
 
         std::cout << "Arcs updated" << "\n";
 
+        for (auto& i : arcs) {
+        std::cout << i.first << " " <<  i.second << " " << nodes.size() << "\n";
+    }
+
         connectivity_matrix = BuildConnMatrix();
     }
     
@@ -175,6 +177,10 @@ void Graph::AddArc(int x, int y) {
     }
 
     std::cout << (exists ? "Exists TRUE" : "Exists FALSE") << "\n";
+
+    for (auto& i : arcs) {
+        std::cout << i.first << " " << i.second << " " << nodes.size() << "\n";
+    }
 
     connectivity_matrix = BuildConnMatrix();
     

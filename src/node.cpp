@@ -50,5 +50,5 @@ Node& Node::operator=(const Node& rvalue) {
         painted = rvalue.painted;
         grabbed = rvalue.grabbed;
         return *this;
-    }
+}
 

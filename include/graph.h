@@ -14,7 +14,7 @@ class Graph {
 
         Graph(std::vector<Node> nodes, std::vector<std::pair<int, int>> arcs);
 
-        std::vector<Node>& GetNodes();
+        wxVector<Node>& GetNodes();
 
         bool HaveIntersection(wxPoint pt, wxCoord r);
         void AddNode(wxPoint pt, wxCoord r);
@@ -36,7 +36,7 @@ class Graph {
 
 
     private:
-        std::vector<Node> nodes;
+        wxVector<Node> nodes;
         std::vector<std::pair<int, int>> arcs;
         GraphMode gm;
         std::vector<std::vector<int>> connectivity_matrix;
