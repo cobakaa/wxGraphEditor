@@ -48,6 +48,9 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	wxMenuItem* m_menuItem1;
 	m_menuItem1 = new wxMenuItem( m_menu1, wxID_ANY, wxString( wxT("New File") ) + wxT('\t') + wxT("Ctrl+N"), wxEmptyString, wxITEM_NORMAL );
 	m_menu1->Append( m_menuItem1 );
+	wxMenuItem* m_menuItem2;
+	m_menuItem2 = new wxMenuItem( m_menu1, wxID_ANY, wxString( wxT("Quit...") ), wxEmptyString, wxITEM_NORMAL );
+	m_menu1->Append( m_menuItem2 );
 
 	m_menubar1->Append( m_menu1, wxT("File") );
 
@@ -69,6 +72,7 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_panel6->Connect( wxEVT_PAINT, wxPaintEventHandler( frmMain::RenderPaint ), NULL, this );
 	m_panel6->Connect( wxEVT_SIZE, wxSizeEventHandler( frmMain::RenderSize ), NULL, this );
 	m_menu1->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( frmMain::NewFile ), this, m_menuItem1->GetId());
+	m_menu1->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( frmMain::OnClose ), this, m_menuItem2->GetId()); // add quit bind
 }
 
 frmMain::~frmMain()
@@ -86,4 +90,8 @@ frmMain::~frmMain()
 	m_panel6->Disconnect( wxEVT_PAINT, wxPaintEventHandler( frmMain::RenderPaint ), NULL, this );
 	m_panel6->Disconnect( wxEVT_SIZE, wxSizeEventHandler( frmMain::RenderSize ), NULL, this );
 
+}
+
+void frmMain::OnClose(wxCommandEvent& event) {
+	Close(true);
 }

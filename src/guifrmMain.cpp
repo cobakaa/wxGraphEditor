@@ -381,7 +381,10 @@ void guifrmMain::OnLMouseDOWN(wxMouseEvent &event)
     {
 
         grabbed_ind = graph.GetIntersectionInd(wxPoint(x, y));
-        graph.GetNodes()[grabbed_ind].GetGrabbed() = true;
+        if (grabbed_ind != -1) {
+            graph.GetNodes()[grabbed_ind].GetGrabbed() = true;
+        }
+        
     }
     else if (mode == mconnect)
     {
