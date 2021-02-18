@@ -43,6 +43,19 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
     {
         DeleteCircle(wxPoint(x, y));
 
+        for (const auto &i : graph.GetArcs()) {
+            wxCoord mx = x, my = y, ax = graph.GetNodes()[i.first].GetPoint().x,
+            ay = graph.GetNodes()[i.first].GetPoint().y, bx = graph.GetNodes()[i.second].GetPoint().x,
+            by = graph.GetNodes()[i.second].GetPoint().y;
+
+            if ((abs((mx - ax) * (by - ay) - (bx - ax) * (my - ay)) <= defaultRad * 25 && 
+            (min(ay, by) <= my && (max(ay, by) >= my) && min(ax, bx) <= mx && max(ax, bx) >= mx)) || 
+            (i.first == i.second && wxRegion(ax - defaultRad * 1.5, ay - defaultRad * 1.95, defaultRad * 1.5, defaultRad * 2).Contains(x, y))) {
+                graph.DeleteArc(i.first, i.second);
+                    
+            }
+        }
+
         // m_panel6->Refresh();
         // Render();
         m_panel6->Refresh();
@@ -179,14 +192,19 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
             }
         }
 
-        // for (const auto &i : graph.GetArcs()) {
-        //     wxPoint f(graph.GetNodes()[i.first].GetPoint()), s(graph.GetNodes()[i.second].GetPoint());
-        //     double k = (s.y - f.y) / (s.x - f.x);
-        //     double c = f.y - k * f.x;
-        //     if (abs(y - x * k - c) <= 3 ) {
-        //         DrawPtrs(dc, i.first, i.second);
-        //     }
-        // }
+        for (const auto &i : graph.GetArcs()) {
+            wxCoord mx = x, my = y, ax = graph.GetNodes()[i.first].GetPoint().x,
+            ay = graph.GetNodes()[i.first].GetPoint().y, bx = graph.GetNodes()[i.second].GetPoint().x,
+            by = graph.GetNodes()[i.second].GetPoint().y;
+
+            if ((abs((mx - ax) * (by - ay) - (bx - ax) * (my - ay)) <= defaultRad * 25 && 
+            (min(ay, by) <= my && (max(ay, by) >= my) && min(ax, bx) <= mx && max(ax, bx) >= mx)) || 
+            (i.first == i.second && wxRegion(ax - defaultRad * 1.5, ay - defaultRad * 1.95, defaultRad * 1.5, defaultRad * 2).Contains(x, y))) {
+                dc.SetPen(wxPen(col1, 2, wxPENSTYLE_SOLID));
+                DrawPtrs(dc, i.first, i.second);
+                    
+            }
+        }
 
         // for (auto& i : graph.GetArcs()) {
 
