@@ -39,6 +39,8 @@ class guifrmMain : public frmMain
 		void AddCircle(wxPoint pt, wxCoord r);
 		void DeleteCircle(wxPoint p);
 
+		void DrawPtrs(wxDC& dc, int first, int second);
+
 		void Configure();
 
 

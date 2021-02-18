@@ -19,8 +19,8 @@ std::vector<std::vector<int>> Graph::BuildConnMatrix() {
         i.resize(nodes.size());
     }
 
-    for (int i = 0; i < nodes.size(); ++i) {
-        for (int j = 0; j < nodes.size(); j++) {
+    for (int i = 0; i < matrix.size(); ++i) {
+        for (int j = 0; j < matrix[i].size(); j++) {
             matrix[i][j] = 0;
         }
     }
@@ -32,13 +32,14 @@ std::vector<std::vector<int>> Graph::BuildConnMatrix() {
         }
     }
 
-    // for (int i = 0; i < matrix.size(); ++i) {
-    //     for (int j = 0; j < matrix.size(); ++j) {
-    //         std::cout << matrix[i][j] << " ";
-    //     }
-    //     std::cout << '\n';
-    // }
-    // std::cout << '\n';
+    std::cout << "Conn matrix" << "\n";
+    for (int i = 0; i < matrix.size(); ++i) {
+        for (int j = 0; j < matrix.size(); ++j) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << '\n';
+    }
+    std::cout << '\n';
 
     return matrix;
 }
@@ -65,12 +66,15 @@ bool Graph::HaveIntersection(wxPoint pt, wxCoord r) {
         }
     }
 
+    // std::cout << (inter ? "Inter TRUE" : "Inter FALSE") << "\n";
+
     return inter;
 }
 
 void Graph::AddNode(Node n) {
     n.GetPainted() = true;
     nodes.push_back(n);
+    std::cout << "Node added" << "\n";
     connectivity_matrix = BuildConnMatrix();
 
 }
@@ -87,6 +91,9 @@ int Graph::GetIntersectionInd(wxPoint pt) {
         }
         cnt++;
     }
+
+    std::cout << (getInter ? "Inter TRUE" : "Inter FALSE") << "\n";
+
     return getInter ? cnt : -1;
 }
 
@@ -105,7 +112,7 @@ void Graph::DeleteNode(wxPoint pt) {
             }
         }
 
-
+        std::cout << "Arcs deleted" << "\n";
         if (!nodes.empty()) {
             nodes.erase(nodes.begin() + cnt);
         }
@@ -118,6 +125,8 @@ void Graph::DeleteNode(wxPoint pt) {
                 (*it).second -= 1;
             }
         }
+
+        std::cout << "Arcs updated" << "\n";
 
         connectivity_matrix = BuildConnMatrix();
     }
@@ -152,6 +161,8 @@ void Graph::AddArc(int x, int y) {
         arcs.push_back(p);
     }
 
+    std::cout << (exists ? "Exists TRUE" : "Exists FALSE") << "\n";
+
     connectivity_matrix = BuildConnMatrix();
     
 }
@@ -166,4 +177,15 @@ const std::vector<std::vector<int>>& Graph::GetConnMatrix() {
 
 GraphMode& Graph::GetGraphMode() {
     return gm;
+}
+
+void Graph::DeleteArc(int x, int y) {
+    for (auto it = arcs.begin(); it != arcs.end(); it++) {
+        if ((*it).first == x && (*it).second == y) {
+            arcs.erase(it);
+            break;
+        }
+    }
+
+    connectivity_matrix = BuildConnMatrix();
 }

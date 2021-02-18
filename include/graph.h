@@ -22,6 +22,7 @@ class Graph {
         int GetIntersectionInd(wxPoint pt);
         void AddConnection();
         void AddArc(int x, int y);
+        void DeleteArc(int x, int y);
 
         const std::vector<std::pair<int, int>>& GetArcs();
         const std::vector<std::vector<int>>& GetConnMatrix();
