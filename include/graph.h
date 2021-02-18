@@ -17,7 +17,7 @@ class Graph {
         std::vector<Node>& GetNodes();
 
         bool HaveIntersection(wxPoint pt, wxCoord r);
-        void AddNode(Node n);
+        void AddNode(wxPoint pt, wxCoord r);
         void DeleteNode(wxPoint pt);
         int GetIntersectionInd(wxPoint pt);
         void AddConnection();

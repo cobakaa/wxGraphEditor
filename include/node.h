@@ -9,10 +9,15 @@ class Node
 
         Node();
         Node(wxPoint pt, wxCoord rad);
+        Node(const Node& node);
+
         wxPoint& GetPoint();
         wxCoord& GetRad();
         bool& GetPainted();
         bool& GetGrabbed();
+
+        Node& operator=(const Node& rvalue);
+
 
 
     private:

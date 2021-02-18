@@ -85,6 +85,10 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
     {
         Configure();
         mode = add;
+        // for (int i = 5; i < 9; ++i) {
+        //     AddCircle(wxPoint(i * 3 * defaultRad, 100), defaultRad);
+        // }
+        
         break;
     }
     }
@@ -161,18 +165,28 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
         if (inter_ind != -1)
         {
             dc.SetPen(wxPen(col1, 2, wxPENSTYLE_SOLID));
-            dc.DrawCircle(graph.GetNodes()[inter_ind].GetPoint(), graph.GetNodes()[inter_ind].GetRad());
+            wxPoint c(graph.GetNodes()[inter_ind].GetPoint());
+            m_panel6->CalcScrolledPosition(c.x, c.y, &c.x, &c.y);
+            dc.DrawCircle(c, graph.GetNodes()[inter_ind].GetRad());
             // dc.SetPen(wxPen(col1, 1, wxPENSTYLE_SOLID));
-        }
 
-
-        for (const auto &i : graph.GetArcs())
-        {
-            if (i.first == inter_ind || i.second == inter_ind)
+            for (const auto &i : graph.GetArcs())
             {
-                DrawPtrs(dc, i.first, i.second);
+                if (i.first == inter_ind || i.second == inter_ind)
+                {
+                    DrawPtrs(dc, i.first, i.second);
+                }
             }
         }
+
+        // for (const auto &i : graph.GetArcs()) {
+        //     wxPoint f(graph.GetNodes()[i.first].GetPoint()), s(graph.GetNodes()[i.second].GetPoint());
+        //     double k = (s.y - f.y) / (s.x - f.x);
+        //     double c = f.y - k * f.x;
+        //     if (abs(y - x * k - c) <= 3 ) {
+        //         DrawPtrs(dc, i.first, i.second);
+        //     }
+        // }
 
         // for (auto& i : graph.GetArcs()) {
 
@@ -313,7 +327,9 @@ void guifrmMain::AddCircle(wxPoint pt, wxCoord r)
 
     if (!graph.HaveIntersection(pt, r))
     {
-        graph.AddNode(Node(pt, r));
+        std::cout << "Node added start" << "\n";
+        graph.AddNode(pt, r);
+        std::cout << "Node added end" << "\n";
     }
 }
 

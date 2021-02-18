@@ -3,6 +3,7 @@
 #include <iostream>
 
 Graph::Graph() {
+    // nodes.resize(1);
     nodes = {};
     arcs = {};
     connectivity_matrix = {{}};
@@ -32,14 +33,14 @@ std::vector<std::vector<int>> Graph::BuildConnMatrix() {
         }
     }
 
-    std::cout << "Conn matrix" << "\n";
-    for (int i = 0; i < matrix.size(); ++i) {
-        for (int j = 0; j < matrix.size(); ++j) {
-            std::cout << matrix[i][j] << " ";
-        }
-        std::cout << '\n';
-    }
-    std::cout << '\n';
+    // std::cout << "Conn matrix" << "\n";
+    // for (int i = 0; i < matrix.size(); ++i) {
+    //     for (int j = 0; j < matrix.size(); ++j) {
+    //         std::cout << matrix[i][j] << " ";
+    //     }
+    //     std::cout << '\n';
+    // }
+    // std::cout << '\n';
 
     return matrix;
 }
@@ -71,10 +72,22 @@ bool Graph::HaveIntersection(wxPoint pt, wxCoord r) {
     return inter;
 }
 
-void Graph::AddNode(Node n) {
-    n.GetPainted() = true;
-    nodes.push_back(n);
-    std::cout << "Node added" << "\n";
+void Graph::AddNode(wxPoint pt, wxCoord r) {
+
+    std::cout << nodes.capacity() << std::endl;
+
+    try{
+        nodes.push_back(Node(pt, r));
+    } catch(const std::exception& err) {
+        std::cout << err.what() << std::endl;
+        std::cout << "PUSHING ERROR" << std::endl;
+    }
+    
+    std::cout << "PUSHED" << std::endl;
+    std::cout << nodes.capacity() << std::endl;
+    nodes[nodes.size() - 1].GetPainted() = true;
+
+    std::cout << "Node added" << std::endl;
     connectivity_matrix = BuildConnMatrix();
 
 }
@@ -92,7 +105,7 @@ int Graph::GetIntersectionInd(wxPoint pt) {
         cnt++;
     }
 
-    std::cout << (getInter ? "Inter TRUE" : "Inter FALSE") << "\n";
+    // std::cout << (getInter ? "Inter TRUE" : "Inter FALSE") << "\n";
 
     return getInter ? cnt : -1;
 }
