@@ -112,7 +112,7 @@ void guifrmMain::RenderPaint( wxPaintEvent& event ) {
     wxPaintDC dc(m_panel6);
     wxColour col1;
 	col1.Set(wxT("#0c0c0c"));
-	// wxBrush brush(wxColour(255, 255, 255), wxBRUSHSTYLE_TRANSPARENT);
+	 wxBrush brush(wxColour(255, 255, 255), wxBRUSHSTYLE_TRANSPARENT);
 	// dc.SetBrush(brush);
 	dc.SetPen(wxPen(col1, 1, wxPENSTYLE_SOLID));
 
@@ -225,7 +225,22 @@ void guifrmMain::RenderPaint( wxPaintEvent& event ) {
                     dc.DrawLine(end, first);
                     dc.DrawLine(end, second);
                 } else {
-                    //
+                    
+                    dc.SetBrush(brush);
+                    dc.DrawEllipticArc(x - defaultRad * 1.5, y - defaultRad * 1.95, defaultRad * 1.5, defaultRad * 2, 3, 250);
+                    dc.SetBrush(wxBrush());
+
+                    end.x = x - defaultRad;
+                    end.y = y;
+
+                    first.x = end.x - defaultRad / 2 * cos(ang) + defaultRad / 3 * sin(ang * 2);
+                    first.y = end.y - defaultRad / 2 * sin(ang) - defaultRad / 3 * cos(ang * 2);
+
+                    second.x = end.x - defaultRad / 2 * cos(ang) - defaultRad / 3 * sin(ang / 2);
+                    second.y = end.y - defaultRad / 2 * sin(ang) + defaultRad / 3 * cos(ang / 2);
+
+                    dc.DrawLine(end, first);
+                    dc.DrawLine(end, second);
                 }
 
                 

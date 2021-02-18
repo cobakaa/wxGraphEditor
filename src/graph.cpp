@@ -32,13 +32,13 @@ std::vector<std::vector<int>> Graph::BuildConnMatrix() {
         }
     }
 
-    for (int i = 0; i < matrix.size(); ++i) {
-        for (int j = 0; j < matrix.size(); ++j) {
-            std::cout << matrix[i][j] << " ";
-        }
-        std::cout << '\n';
-    }
-    std::cout << '\n';
+    // for (int i = 0; i < matrix.size(); ++i) {
+    //     for (int j = 0; j < matrix.size(); ++j) {
+    //         std::cout << matrix[i][j] << " ";
+    //     }
+    //     std::cout << '\n';
+    // }
+    // std::cout << '\n';
 
     return matrix;
 }
