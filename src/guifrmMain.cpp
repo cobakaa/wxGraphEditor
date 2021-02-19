@@ -607,10 +607,15 @@ Graph guifrmMain::MGFToGraph(const wxString& str) {
         grabbed = std::atoi(str.substr(last, str.find(" ", last)));
         found = str.find("{\"pt.x", last);
         // std::cout << pt.x << " " << pt.y << " " << r << "\n";
-        while (g.HaveIntersection(pt, r)) {
-            pt.y += r;
+        while (g.HaveIntersection(pt, defaultRad)) {
+            if (defaultRad > 2) {
+                defaultRad -= 2;
+            }
         }
-        g.AddNode(pt, r);
+        for (auto & i : g.GetNodes()) {
+            i.GetRad() = defaultRad;
+        }
+        g.AddNode(pt, defaultRad);
 
     }
 
