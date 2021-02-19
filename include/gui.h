@@ -59,7 +59,8 @@ class frmMain : public wxFrame
 		virtual void OnOpen( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSaveAs( wxCommandEvent& event ) { event.Skip(); }
 
-		virtual void OnClose(wxCommandEvent& event) { event.Skip(); }
+		virtual void OnCloseMenu(wxCommandEvent& event) { event.Skip(); }
+		virtual void OnClose(wxCloseEvent& event) { event.Skip(); }
 
 
 	public:

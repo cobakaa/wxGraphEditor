@@ -21,6 +21,13 @@ guifrmMain::guifrmMain(wxWindow *parent)
     saved = true;
 }
 
+void guifrmMain::Unsaved() {
+    if (saved) {
+        saved = false;
+        m_panel6->GetParent()->SetLabel(wxString("*") + m_panel6->GetParent()->GetLabel());
+    }
+}
+
 void guifrmMain::OnLMouseUP(wxMouseEvent &event)
 {
 
@@ -35,7 +42,7 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
     case add:
     {
         AddCircle(wxPoint(x, y), defaultRad);
-        saved = false;
+        Unsaved();
 
         // RenderPaint();
         m_panel6->Refresh();
@@ -60,7 +67,7 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
             }
         }
 
-        saved = false;
+        Unsaved();
 
         // m_panel6->Refresh();
         // Render();
@@ -76,7 +83,7 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
             graph.GetNodes()[grabbed_ind].GetGrabbed() = false;
             grabbed_ind = -1;
 
-            saved = false;
+            Unsaved();
         }
         break;
     }
@@ -95,7 +102,7 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
             }
             grabbed_ind = -1;
 
-            saved = false;
+            Unsaved();
 
             m_panel6->Refresh();
             m_panel6->Update();
@@ -108,6 +115,7 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
     {
         Configure();
         mode = add;
+        saved = true;
         // for (int i = 5; i < 9; ++i) {
         //     AddCircle(wxPoint(i * 3 * defaultRad, 100), defaultRad);
         // }
@@ -537,7 +545,15 @@ void guifrmMain::OnOpen( wxCommandEvent& event) {
         saved = true;
         if (mode == none) {
             mode = add;
-        };
+        }
+        if (graph.GetGraphMode() == directed)
+        {
+            m_panel6->GetParent()->SetLabel(wxString(wxT("Directed graph ")) + openFileDialog.GetPath());
+        }
+        else if (graph.GetGraphMode() == undirected)
+        {
+            m_panel6->GetParent()->SetLabel(wxString(wxT("Undirected graph ")) +  openFileDialog.GetPath()); 
+        }
         // MGFToGraph(str);
     }
     
@@ -563,6 +579,8 @@ void guifrmMain::OnSaveAs( wxCommandEvent& event ) {
         output_stream.GetFile()->Write(str);
         output_stream.GetFile()->Close();
         saved = true;
+        wxString label = m_panel6->GetParent()->GetLabel();
+        m_panel6->GetParent()->SetLabel(label.SubString(1, label.size() - 1));
     }
     
 }
@@ -616,8 +634,8 @@ Graph guifrmMain::MGFToGraph(const wxString& str) {
     return g;
 }
 
-void guifrmMain::OnClose(wxCommandEvent& event) {
-	Close(true);
+void guifrmMain::OnCloseMenu(wxCommandEvent& event) {
+	Close();
 }
 
 void guifrmMain::OnClose(wxCloseEvent& event)

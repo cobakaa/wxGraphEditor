@@ -78,9 +78,10 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_panel6->Connect( wxEVT_PAINT, wxPaintEventHandler( frmMain::RenderPaint ), NULL, this );
 	m_panel6->Connect( wxEVT_SIZE, wxSizeEventHandler( frmMain::RenderSize ), NULL, this );
 	m_menu1->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( frmMain::NewFile ), this, m_menuItem1->GetId());
-	m_menu1->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( frmMain::OnClose ), this, m_menuItem2->GetId()); // add quit bind
+	m_menu1->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( frmMain::OnCloseMenu ), this, m_menuItem2->GetId()); // add quit bind
 	m_menu1->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( frmMain::OnOpen ), this, m_menuItem3->GetId()); 
 	m_menu1->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( frmMain::OnSaveAs ), this, m_menuItem4->GetId()); 
+	this->Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(frmMain::OnClose));
 }
 
 frmMain::~frmMain()
@@ -97,6 +98,7 @@ frmMain::~frmMain()
 	m_panel6->Disconnect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( frmMain::NodeZoom ), NULL, this );
 	m_panel6->Disconnect( wxEVT_PAINT, wxPaintEventHandler( frmMain::RenderPaint ), NULL, this );
 	m_panel6->Disconnect( wxEVT_SIZE, wxSizeEventHandler( frmMain::RenderSize ), NULL, this );
+	this->Disconnect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(frmMain::OnClose));
 
 }
 

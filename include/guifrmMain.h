@@ -38,8 +38,8 @@ class guifrmMain : public frmMain
 		void OnOpen( wxCommandEvent& event) override;
 		void OnSaveAs(wxCommandEvent& event) override;
 
-		void OnClose(wxCommandEvent& event) override;
-		void OnClose(wxCloseEvent& event);
+		void OnCloseMenu(wxCommandEvent& event) override;
+		void OnClose(wxCloseEvent& event) override;
 
 		void AddCircle(wxPoint pt, wxCoord r);
 		void DeleteCircle(wxPoint p);
@@ -49,6 +49,8 @@ class guifrmMain : public frmMain
 		void Configure();
 
 		Graph MGFToGraph(const wxString& str);
+
+		void Unsaved();
 
 
 	private:
