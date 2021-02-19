@@ -607,6 +607,9 @@ Graph guifrmMain::MGFToGraph(const wxString& str) {
         grabbed = std::atoi(str.substr(last, str.find(" ", last)));
         found = str.find("{\"pt.x", last);
         // std::cout << pt.x << " " << pt.y << " " << r << "\n";
+        while (g.HaveIntersection(pt, r)) {
+            pt.y += r;
+        }
         g.AddNode(pt, r);
 
     }
