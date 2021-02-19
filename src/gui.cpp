@@ -49,10 +49,10 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_menuItem1 = new wxMenuItem( m_menu1, wxID_ANY, wxString( wxT("New File") ) + wxT('\t') + wxT("Ctrl+N"), wxEmptyString, wxITEM_NORMAL );
 	m_menu1->Append( m_menuItem1 );
 	wxMenuItem* m_menuItem3;
-	m_menuItem3 = new wxMenuItem( m_menu1, wxID_ANY, wxString( wxT("Open File...") ), wxEmptyString, wxITEM_NORMAL );
+	m_menuItem3 = new wxMenuItem( m_menu1, wxID_ANY, wxString( wxT("Open File...") ) + wxT('\t') + wxT("Ctrl+O"), wxEmptyString, wxITEM_NORMAL );
 	m_menu1->Append( m_menuItem3 );
 	wxMenuItem* m_menuItem4;
-	m_menuItem4 = new wxMenuItem( m_menu1, wxID_ANY, wxString( wxT("Save As...") ), wxEmptyString, wxITEM_NORMAL );
+	m_menuItem4 = new wxMenuItem( m_menu1, wxID_ANY, wxString( wxT("Save As...") ) + wxT('\t') + wxT("Ctrl+S"), wxEmptyString, wxITEM_NORMAL );
 	m_menu1->Append( m_menuItem4 );
 	wxMenuItem* m_menuItem2;
 	m_menuItem2 = new wxMenuItem( m_menu1, wxID_ANY, wxString( wxT("Exit") ), wxEmptyString, wxITEM_NORMAL );
