@@ -45,7 +45,7 @@ std::vector<std::vector<int>> Graph::BuildConnMatrix() {
     return matrix;
 }
 
-Graph::Graph(std::vector<Node> nodes, std::vector<std::pair<int, int>> arcs) {
+Graph::Graph(wxVector<Node> nodes, std::vector<std::pair<int, int>> arcs) {
     nodes = nodes;
     arcs = arcs;
     connectivity_matrix = BuildConnMatrix();
@@ -207,4 +207,45 @@ void Graph::DeleteArc(int x, int y) {
     }
 
     connectivity_matrix = BuildConnMatrix();
+}
+
+wxString Graph::GraphToMGF() {
+    wxArrayString str;
+    str.Add("{");
+    str.Add("\"nodes\":[");
+
+    for (auto& i : nodes) {
+        str.Add("{\"pt.x\":\"");
+        str.Add(std::to_string(i.GetPoint().x));
+        str.Add("\",\"pt.y\":\"");
+        str.Add(std::to_string(i.GetPoint().y));
+        str.Add("\",\"rad\":\"");
+        str.Add(std::to_string(i.GetRad())); 
+        str.Add("\",\"painted\":\"");
+        str.Add(std::to_string(i.GetPainted()));
+        str.Add("\",\"grabbed\":\"");
+        str.Add(std::to_string(i.GetGrabbed()));
+        str.Add("\"},");
+    }
+
+    str.Add("],");
+
+    str.Add("\"arcs\":[");
+
+    for (auto& i : arcs) {
+        str.Add("{\"first\":\"");
+        str.Add(std::to_string(i.first));
+        str.Add("\",\"second\":\"");
+        str.Add(std::to_string(i.second));
+        str.Add("\"},");
+    }
+
+    str.Add("],");
+    str.Add("\"gm\":\"");
+    str.Add((gm == directed) ? "directed" : "undirected");
+
+    str.Add("\"}");
+
+
+    return wxJoin(str, ' ');
 }

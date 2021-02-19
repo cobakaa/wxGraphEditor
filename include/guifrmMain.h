@@ -35,6 +35,11 @@ class guifrmMain : public frmMain
 		void OnEraseBackground(wxEraseEvent & event) {};
 		void NodeZoom( wxMouseEvent& event ) override;
 		void ConnectMode( wxCommandEvent& event ) override;
+		void OnOpen( wxCommandEvent& event) override;
+		void OnSaveAs(wxCommandEvent& event) override;
+
+		void OnClose(wxCommandEvent& event) override;
+		void OnClose(wxCloseEvent& event);
 
 		void AddCircle(wxPoint pt, wxCoord r);
 		void DeleteCircle(wxPoint p);
@@ -42,6 +47,8 @@ class guifrmMain : public frmMain
 		void DrawPtrs(wxDC& dc, int first, int second);
 
 		void Configure();
+
+		Graph MGFToGraph(const wxString& str);
 
 
 	private:
@@ -51,6 +58,7 @@ class guifrmMain : public frmMain
 		int grabbed_ind;
 		// int grabbed_ind_con;
 		wxPoint line_end;
+		bool saved;
 
 };
 

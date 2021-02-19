@@ -56,8 +56,10 @@ class frmMain : public wxFrame
 		virtual void RenderPaint( wxPaintEvent& event ) { event.Skip(); }
 		virtual void RenderSize( wxSizeEvent& event ) { event.Skip(); }
 		virtual void NewFile( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnOpen( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSaveAs( wxCommandEvent& event ) { event.Skip(); }
 
-		void OnClose(wxCommandEvent& event);
+		virtual void OnClose(wxCommandEvent& event) { event.Skip(); }
 
 
 	public:

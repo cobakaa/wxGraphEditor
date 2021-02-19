@@ -12,7 +12,7 @@ class Graph {
 
         std::vector<std::vector<int>> BuildConnMatrix();
 
-        Graph(std::vector<Node> nodes, std::vector<std::pair<int, int>> arcs);
+        Graph(wxVector<Node> nodes, std::vector<std::pair<int, int>> arcs);
 
         wxVector<Node>& GetNodes();
 
@@ -20,7 +20,7 @@ class Graph {
         void AddNode(wxPoint pt, wxCoord r);
         void DeleteNode(wxPoint pt);
         int GetIntersectionInd(wxPoint pt);
-        void AddConnection();
+        // void AddConnection();
         void AddArc(int x, int y);
         void DeleteArc(int x, int y);
 
@@ -32,6 +32,8 @@ class Graph {
         void Clear();
 
         bool Empty();
+
+        wxString GraphToMGF();
 
 
 

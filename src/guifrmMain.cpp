@@ -6,6 +6,8 @@
 #include "../include/customDialog.h"
 
 #include <wx/dcbuffer.h>
+#include <wx/filedlg.h>
+#include <wx/wfstream.h>
 
 wxCoord defaultRad = 20;
 
@@ -16,6 +18,7 @@ guifrmMain::guifrmMain(wxWindow *parent)
     graph = Graph();
     grabbed_ind = -1;
     line_end = wxPoint(-1, -1);
+    saved = true;
 }
 
 void guifrmMain::OnLMouseUP(wxMouseEvent &event)
@@ -32,6 +35,7 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
     case add:
     {
         AddCircle(wxPoint(x, y), defaultRad);
+        saved = false;
 
         // RenderPaint();
         m_panel6->Refresh();
@@ -56,6 +60,8 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
             }
         }
 
+        saved = false;
+
         // m_panel6->Refresh();
         // Render();
         m_panel6->Refresh();
@@ -69,6 +75,8 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
         {
             graph.GetNodes()[grabbed_ind].GetGrabbed() = false;
             grabbed_ind = -1;
+
+            saved = false;
         }
         break;
     }
@@ -86,6 +94,8 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
                 graph.AddArc(grabbed_ind, second);
             }
             grabbed_ind = -1;
+
+            saved = false;
 
             m_panel6->Refresh();
             m_panel6->Update();
@@ -143,7 +153,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
 
     wxCoord x, y, z, w;
 
-    for (auto &i : graph.GetNodes())
+    for (auto i : graph.GetNodes())
     {
         if (i.GetPainted())
         {
@@ -493,4 +503,135 @@ void guifrmMain::Configure()
         m_panel6->GetParent()->SetLabel(wxT("Undirected graph"));
         graph.GetGraphMode() = undirected;
     }
+}
+
+void guifrmMain::OnOpen( wxCommandEvent& event) {
+    if (!saved)
+    {
+        if (wxMessageBox(_("Current content has not been saved! Proceed?"), _("Please confirm"),
+                         wxICON_QUESTION | wxYES_NO, this) == wxNO )
+            return;
+        //else: proceed asking to the user the new file to open
+    }
+    
+    wxFileDialog openFileDialog(this, _("Open MGF file"), "", "",
+                       "MGF files (*.mgf)|*.mgf", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+    if (openFileDialog.ShowModal() == wxID_CANCEL)
+        return;     // the user changed idea...
+    
+    // proceed loading the file chosen by the user;
+    // this can be done with e.g. wxWidgets input streams:
+    wxFileInputStream input_stream(openFileDialog.GetPath());
+    if (!input_stream.IsOk())
+    {
+        wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
+        return;
+    } else {
+        wxString str;
+        input_stream.GetFile()->ReadAll(&str);
+        input_stream.GetFile()->Close();
+        graph = MGFToGraph(str);
+
+        m_panel6->Refresh();
+        m_panel6->Update();
+        saved = true;
+        if (mode == none) {
+            mode = add;
+        };
+        // MGFToGraph(str);
+    }
+    
+    // ...
+}
+
+void guifrmMain::OnSaveAs( wxCommandEvent& event ) {
+     wxFileDialog 
+        saveFileDialog(this, _("Save MGF file"), "", "",
+                       "MGF files (*.mgf)|*.mgf", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+    if (saveFileDialog.ShowModal() == wxID_CANCEL)
+        return;     // the user changed idea...
+    
+    // save the current contents in the file;
+    // this can be done with e.g. wxWidgets output streams:
+    wxFileOutputStream output_stream(saveFileDialog.GetPath());
+    if (!output_stream.IsOk())
+    {
+        wxLogError("Cannot save current contents in file '%s'.", saveFileDialog.GetPath());
+        return;
+    } else {
+        wxString str = graph.GraphToMGF();
+        output_stream.GetFile()->Write(str);
+        output_stream.GetFile()->Close();
+        saved = true;
+    }
+    
+}
+
+Graph guifrmMain::MGFToGraph(const wxString& str) {
+    Graph g;
+    int last = str.Find("nodes");
+    // std::cout << last << "\n";
+    int found = 0;
+    while (found != wxNOT_FOUND) {
+        wxPoint pt;
+        wxCoord r;
+        last = str.find("pt.x\"", last) + 7;
+        pt.x = std::atoi(str.substr(last, str.find(" ", last)));
+        std::cout << pt.x << "\n";
+        last = str.find("pt.y\"", last) + 7;
+        pt.y = std::atoi(str.substr(last, str.find(" ", last)));
+        last = str.find("rad\"", last) + 6;
+        r = std::atoi(str.substr(last, str.find(" ", last)));
+        bool painted, grabbed;
+        last = str.find("painted\"", last) + 10;
+        painted = std::atoi(str.substr(last, str.find(" ", last)));
+        last = str.find("grabbed\"", last) + 10;
+        grabbed = std::atoi(str.substr(last, str.find(" ", last)));
+        found = str.find("{\"pt.x", last);
+        // std::cout << pt.x << " " << pt.y << " " << r << "\n";
+        g.AddNode(pt, r);
+
+    }
+
+    last = str.find("arcs", last);
+    found = last;
+    while (found != wxNOT_FOUND) {
+        int f, s;
+        last = str.find("first\"", last) + 8;
+        f = std::atoi(str.substr(last, str.find(" ", last)));
+        last = str.find("second\"", last) + 9;
+        s = std::atoi(str.substr(last, str.find(" ", last)));
+        found = str.find("{\"first", last);
+        g.AddArc(f, s);
+
+    }
+
+    last = str.find("gm", last);
+    if (str.find("directed", last) != wxNOT_FOUND) {
+        g.GetGraphMode() = directed;
+    } else if (str.find("undirected", last) != wxNOT_FOUND) {
+        g.GetGraphMode() = undirected;
+    }
+
+    return g;
+}
+
+void guifrmMain::OnClose(wxCommandEvent& event) {
+	Close(true);
+}
+
+void guifrmMain::OnClose(wxCloseEvent& event)
+{
+    if ( event.CanVeto() && !saved )
+    {
+        if ( wxMessageBox("The file has not been saved... continue closing?",
+                          "Please confirm",
+                          wxICON_QUESTION | wxYES_NO) != wxYES )
+        {
+            event.Veto();
+            return;
+        }
+    }
+    Destroy();  // you may also do:  event.Skip();
+                // since the default event handler does call Destroy(), too
 }
