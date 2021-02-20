@@ -54,7 +54,7 @@ class guifrmMain : public frmMain
 
 		void Unsaved();
 
-		void OnTextEnter(wxCommandEvent& event);
+		void OnTextEnter(wxCommandEvent& event) override;
 
 
 	private:
@@ -65,6 +65,7 @@ class guifrmMain : public frmMain
 		// int grabbed_ind_con;
 		wxPoint line_end;
 		bool saved;
+		int texting_ind;
 
 };
 

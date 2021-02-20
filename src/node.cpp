@@ -6,7 +6,7 @@
 Node::Node() : pt(wxPoint(0, 0)), rad(0) {
     painted = false;
     grabbed = false;
-    label = "";
+    label = " ";
 }
 
 Node::Node(wxPoint pt_, wxCoord rad_, wxString label_) 

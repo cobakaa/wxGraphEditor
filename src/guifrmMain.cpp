@@ -9,6 +9,8 @@
 #include <wx/filedlg.h>
 #include <wx/wfstream.h>
 
+const wxCoord const_defaultRead = 20;
+
 wxCoord defaultRad = 20;
 
 guifrmMain::guifrmMain(wxWindow *parent)
@@ -19,6 +21,7 @@ guifrmMain::guifrmMain(wxWindow *parent)
     grabbed_ind = -1;
     line_end = wxPoint(-1, -1);
     saved = true;
+    texting_ind = -1;
 }
 
 void guifrmMain::Unsaved() {
@@ -113,20 +116,16 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
 
     case text:
     {   
-        int ind = graph.GetIntersectionInd({x, y});
-        if (ind != -1) {
-            wxTextCtrl* textCtrl1 = new wxTextCtrl(m_panel6, wxID_ANY, "", 
-            {graph.GetNodes()[ind].GetPoint().x - graph.GetNodes()[ind].GetRad(), graph.GetNodes()[ind].GetPoint().y - graph.GetNodes()[ind].GetRad() / 2}, 
-            {defaultRad * 2, defaultRad});
+        texting_ind = graph.GetIntersectionInd({x, y});
+        if (texting_ind != -1) {
+            textCtrl1->Move(graph.GetNodes()[texting_ind].GetPoint().x - graph.GetNodes()[texting_ind].GetRad(), 
+                graph.GetNodes()[texting_ind].GetPoint().y - graph.GetNodes()[texting_ind].GetRad() / 2);
+            textCtrl1->SetSize({defaultRad * 2, defaultRad});
+            textCtrl1->Show();
 
-            textCtrl1->Bind(wxEVT_TEXT, [&](wxCommandEvent& event) {
-                std::cout << "a" << "\n";
-                 textCtrl1->GetLineText(0);
-            });
-            
-            std::cout << textCtrl1->GetLineText(0) << "\n";
-            // std::cout << textCtrl1->GetLineText(0) << "\n";
-
+        } else {
+            textCtrl1->Hide();
+            texting_ind = -1;
         }
 
         break;
@@ -147,7 +146,21 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
 }
 
 void guifrmMain::OnTextEnter(wxCommandEvent& event) {
-    // wxString str = 
+    std::cout << "_________" << "\n";
+    if (texting_ind != -1) {
+        std::cout << "_________" << "\n";
+        wxString str = textCtrl1->GetLineText(0);
+        std::cout << str << "\n";
+        graph.GetNodes()[texting_ind].GetLabel() = str;
+        texting_ind = -1;
+
+        textCtrl1->Hide();
+        Unsaved();
+
+        m_panel6->Refresh();
+        m_panel6->Update();
+    }
+    
 }
 
 void guifrmMain::AddMode(wxCommandEvent &event)
@@ -192,6 +205,9 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
         {
             m_panel6->CalcScrolledPosition(i.GetPoint().x, i.GetPoint().y, &x, &y);
             dc.DrawCircle(x, y, i.GetRad());
+            wxFont font = wxFont({defaultRad / 4, defaultRad / 2}, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+            dc.SetFont(font);
+            dc.DrawText(i.GetLabel(), x - 3 * i.GetRad() / 4, y - i.GetRad() / 2);
         }
     }
 

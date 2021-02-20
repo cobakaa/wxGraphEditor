@@ -22,6 +22,7 @@
 #include <wx/sizer.h>
 #include <wx/menu.h>
 #include <wx/frame.h>
+#include <wx/textctrl.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -43,6 +44,7 @@ class frmMain : public wxFrame
 		wxScrolledWindow* m_panel6;
 		wxMenuBar* m_menubar1;
 		wxMenu* m_menu1;
+		wxTextCtrl* textCtrl1;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void RenderMove( wxMoveEvent& event ) { event.Skip(); }
@@ -65,6 +67,8 @@ class frmMain : public wxFrame
 
 		virtual void OnCloseMenu(wxCommandEvent& event) { event.Skip(); }
 		virtual void OnClose(wxCloseEvent& event) { event.Skip(); }
+
+		virtual void OnTextEnter(wxCommandEvent &event) {event.Skip();}
 
 
 	public:

@@ -65,6 +65,9 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	this->SetMenuBar( m_menubar1 );
 
+	textCtrl1 = new wxTextCtrl(m_panel6, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+	textCtrl1->Hide();
+
 
 	this->Centre( wxBOTH );
 
@@ -86,6 +89,7 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_menu1->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( frmMain::OnOpen ), this, m_menuItem3->GetId()); 
 	m_menu1->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( frmMain::OnSaveAs ), this, m_menuItem4->GetId()); 
 	this->Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(frmMain::OnClose));
+	textCtrl1->Connect(wxEVT_TEXT_ENTER, wxCommandEventHandler(frmMain::OnTextEnter), NULL, this);
 }
 
 frmMain::~frmMain()
@@ -104,6 +108,7 @@ frmMain::~frmMain()
 	m_panel6->Disconnect( wxEVT_PAINT, wxPaintEventHandler( frmMain::RenderPaint ), NULL, this );
 	m_panel6->Disconnect( wxEVT_SIZE, wxSizeEventHandler( frmMain::RenderSize ), NULL, this );
 	this->Disconnect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(frmMain::OnClose));
+	textCtrl1->Disconnect(wxEVT_TEXT_ENTER, wxCommandEventHandler(frmMain::OnTextEnter), NULL, this);
 
 }
 
