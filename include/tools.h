@@ -8,6 +8,7 @@ enum Mode {
     mdelete,
     repos,
     mconnect,
+    text,
     none
 };
 

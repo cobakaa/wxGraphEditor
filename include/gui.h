@@ -39,6 +39,7 @@ class frmMain : public wxFrame
 		wxToolBarToolBase* m_tool2;
 		wxToolBarToolBase* m_tool3;
 		wxToolBarToolBase* m_tool4;
+		wxToolBarToolBase* m_tool5;
 		wxScrolledWindow* m_panel6;
 		wxMenuBar* m_menubar1;
 		wxMenu* m_menu1;
@@ -49,12 +50,15 @@ class frmMain : public wxFrame
 		virtual void DeleteMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ReposMode( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ConnectMode( wxCommandEvent& event ) { event.Skip(); }
+		virtual void TextMode( wxCommandEvent& event ) { event.Skip(); }
+
 		virtual void OnLMouseDOWN( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnLMouseUP( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnMouseMove( wxMouseEvent& event ) { event.Skip(); }
 		virtual void NodeZoom( wxMouseEvent& event ) { event.Skip(); }
 		virtual void RenderPaint( wxPaintEvent& event ) { event.Skip(); }
 		virtual void RenderSize( wxSizeEvent& event ) { event.Skip(); }
+		
 		virtual void NewFile( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpen( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSaveAs( wxCommandEvent& event ) { event.Skip(); }

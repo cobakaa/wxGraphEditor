@@ -17,7 +17,7 @@ class Graph {
         wxVector<Node>& GetNodes();
 
         bool HaveIntersection(wxPoint pt, wxCoord r);
-        void AddNode(wxPoint pt, wxCoord r);
+        void AddNode(wxPoint pt, wxCoord r, wxString label = "");
         void DeleteNode(wxPoint pt);
         int GetIntersectionInd(wxPoint pt);
         // void AddConnection();

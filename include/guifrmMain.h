@@ -38,6 +38,8 @@ class guifrmMain : public frmMain
 		void OnOpen( wxCommandEvent& event) override;
 		void OnSaveAs(wxCommandEvent& event) override;
 
+		void TextMode( wxCommandEvent& event ) override;
+
 		void OnCloseMenu(wxCommandEvent& event) override;
 		void OnClose(wxCloseEvent& event) override;
 
@@ -51,6 +53,8 @@ class guifrmMain : public frmMain
 		Graph MGFToGraph(const wxString& str);
 
 		void Unsaved();
+
+		void OnTextEnter(wxCommandEvent& event);
 
 
 	private:

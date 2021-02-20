@@ -8,13 +8,14 @@ class Node
     public:
 
         Node();
-        Node(wxPoint pt, wxCoord rad);
+        Node(wxPoint pt, wxCoord rad, wxString label = "");
         Node(const Node& node);
 
         wxPoint& GetPoint();
         wxCoord& GetRad();
         bool& GetPainted();
         bool& GetGrabbed();
+        wxString& GetLabel();
 
         Node& operator=(const Node& rvalue);
 
@@ -25,6 +26,7 @@ class Node
         wxCoord rad;
         bool painted;
         bool grabbed;
+        wxString label;
 };
 
 

@@ -111,6 +111,27 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
         break;
     }
 
+    case text:
+    {   
+        int ind = graph.GetIntersectionInd({x, y});
+        if (ind != -1) {
+            wxTextCtrl* textCtrl1 = new wxTextCtrl(m_panel6, wxID_ANY, "", 
+            {graph.GetNodes()[ind].GetPoint().x - graph.GetNodes()[ind].GetRad(), graph.GetNodes()[ind].GetPoint().y - graph.GetNodes()[ind].GetRad() / 2}, 
+            {defaultRad * 2, defaultRad});
+
+            textCtrl1->Bind(wxEVT_TEXT, [&](wxCommandEvent& event) {
+                std::cout << "a" << "\n";
+                 textCtrl1->GetLineText(0);
+            });
+            
+            std::cout << textCtrl1->GetLineText(0) << "\n";
+            // std::cout << textCtrl1->GetLineText(0) << "\n";
+
+        }
+
+        break;
+    }
+
     case none:
     {
         Configure();
@@ -123,6 +144,10 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
         break;
     }
     }
+}
+
+void guifrmMain::OnTextEnter(wxCommandEvent& event) {
+    // wxString str = 
 }
 
 void guifrmMain::AddMode(wxCommandEvent &event)
@@ -605,6 +630,8 @@ Graph guifrmMain::MGFToGraph(const wxString& str) {
         painted = std::atoi(str.substr(last, str.find(" ", last)));
         last = str.find("grabbed\"", last) + 10;
         grabbed = std::atoi(str.substr(last, str.find(" ", last)));
+        last = str.find("label\"", last) + 8;
+        wxString label = str.substr(last, str.find(" \"", last) - 1);
         found = str.find("{\"pt.x", last);
         // std::cout << pt.x << " " << pt.y << " " << r << "\n";
         while (g.HaveIntersection(pt, defaultRad)) {
@@ -615,7 +642,7 @@ Graph guifrmMain::MGFToGraph(const wxString& str) {
         for (auto & i : g.GetNodes()) {
             i.GetRad() = defaultRad;
         }
-        g.AddNode(pt, defaultRad);
+        g.AddNode(pt, defaultRad, label);
 
     }
 
@@ -660,4 +687,12 @@ void guifrmMain::OnClose(wxCloseEvent& event)
     }
     Destroy();  // you may also do:  event.Skip();
                 // since the default event handler does call Destroy(), too
+}
+
+void guifrmMain::TextMode( wxCommandEvent& event ) {
+    if (mode == text) {
+        mode = none;
+    } else {
+        mode = text;
+    }
 }

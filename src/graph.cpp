@@ -72,11 +72,11 @@ bool Graph::HaveIntersection(wxPoint pt, wxCoord r) {
     return inter;
 }
 
-void Graph::AddNode(wxPoint pt, wxCoord r) {
+void Graph::AddNode(wxPoint pt, wxCoord r, wxString label) {
 
     std::cout << nodes.capacity() << std::endl;
 
-    Node n = Node(pt, r);
+    Node n = Node(pt, r, label);
 
     nodes.push_back(n);
     
@@ -225,6 +225,8 @@ wxString Graph::GraphToMGF() {
         str.Add(std::to_string(i.GetPainted()));
         str.Add("\",\"grabbed\":\"");
         str.Add(std::to_string(i.GetGrabbed()));
+        str.Add("\",\"label\":\"");
+        str.Add(i.GetLabel());
         str.Add("\"},");
     }
 
