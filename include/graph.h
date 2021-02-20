@@ -34,6 +34,13 @@ class Graph {
         bool Empty();
 
         wxString GraphToMGF();
+        void BuildComponents();
+        void dfs1 (int v);
+        void dfs2 (int v);
+        void BuildIncidents();
+
+        const std::vector<std::vector<int>>& GetComponents();
+
 
 
 
@@ -42,6 +49,12 @@ class Graph {
         std::vector<std::pair<int, int>> arcs;
         GraphMode gm;
         std::vector<std::vector<int>> connectivity_matrix;
+
+
+        std::vector <std::vector<int>> g, gr;
+        std::vector<bool> used;
+        std::vector<int> order, component;
+        std::vector<std::vector<int>> components;
 };
 
 

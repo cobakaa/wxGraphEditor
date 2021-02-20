@@ -55,6 +55,7 @@ class guifrmMain : public frmMain
 		void Unsaved();
 
 		void OnTextEnter(wxCommandEvent& event) override;
+		void OnStrongConnToggle(wxCommandEvent& event) override;
 
 
 	private:
@@ -66,6 +67,7 @@ class guifrmMain : public frmMain
 		wxPoint line_end;
 		bool saved;
 		int texting_ind;
+		bool strong_conn_toggled;
 
 };
 

@@ -22,6 +22,7 @@ guifrmMain::guifrmMain(wxWindow *parent)
     line_end = wxPoint(-1, -1);
     saved = true;
     texting_ind = -1;
+    strong_conn_toggled = false;
 }
 
 void guifrmMain::Unsaved() {
@@ -121,7 +122,9 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
             textCtrl1->Move(graph.GetNodes()[texting_ind].GetPoint().x - graph.GetNodes()[texting_ind].GetRad(), 
                 graph.GetNodes()[texting_ind].GetPoint().y - graph.GetNodes()[texting_ind].GetRad() / 2);
             textCtrl1->SetSize({defaultRad * 2, defaultRad});
+            textCtrl1->SetValue(graph.GetNodes()[texting_ind].GetLabel());
             textCtrl1->Show();
+            textCtrl1->SetFocus();
 
         } else {
             textCtrl1->Hide();
@@ -173,6 +176,9 @@ void guifrmMain::AddMode(wxCommandEvent &event)
     {
         mode = add;
     }
+    if (textCtrl1->IsShown()) {
+        textCtrl1->Hide();
+    }
 }
 
 void guifrmMain::DeleteMode(wxCommandEvent &event)
@@ -184,6 +190,9 @@ void guifrmMain::DeleteMode(wxCommandEvent &event)
     else
     {
         mode = mdelete;
+    }
+    if (textCtrl1->IsShown()) {
+        textCtrl1->Hide();
     }
 }
 
@@ -198,6 +207,8 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
     dc.SetPen(wxPen(col1, 1, wxPENSTYLE_SOLID));
 
     wxCoord x, y, z, w;
+    wxFont font = wxFont({defaultRad / 4, defaultRad / 2}, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    dc.SetFont(font);
 
     for (auto i : graph.GetNodes())
     {
@@ -205,9 +216,8 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
         {
             m_panel6->CalcScrolledPosition(i.GetPoint().x, i.GetPoint().y, &x, &y);
             dc.DrawCircle(x, y, i.GetRad());
-            wxFont font = wxFont({defaultRad / 4, defaultRad / 2}, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-            dc.SetFont(font);
-            dc.DrawText(i.GetLabel(), x - 3 * i.GetRad() / 4, y - i.GetRad() / 2);
+            
+            dc.DrawText(i.GetLabel(), x - 3 * i.GetRad() / 4, y - i.GetRad() / 3);
         }
     }
 
@@ -240,6 +250,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
             wxPoint c(graph.GetNodes()[inter_ind].GetPoint());
             m_panel6->CalcScrolledPosition(c.x, c.y, &c.x, &c.y);
             dc.DrawCircle(c, graph.GetNodes()[inter_ind].GetRad());
+            dc.DrawText(graph.GetNodes()[inter_ind].GetLabel(), x - 3 * graph.GetNodes()[inter_ind].GetRad() / 4, y - graph.GetNodes()[inter_ind].GetRad() / 3);
             // dc.SetPen(wxPen(col1, 1, wxPENSTYLE_SOLID));
 
             for (const auto &i : graph.GetArcs())
@@ -268,6 +279,15 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
         // for (auto& i : graph.GetArcs()) {
 
         // }
+    }
+
+    if (strong_conn_toggled) {
+        for (int i = 0; i < graph.GetComponents().size(); ++i) {
+            for (int j = 0; j < graph.GetComponents().at(i).size(); ++j) {
+                std::cout << graph.GetComponents().at(i).at(j) << " ";
+            }
+             std::cout << "\n";
+        } 
     }
 }
 
@@ -425,6 +445,9 @@ void guifrmMain::ReposMode(wxCommandEvent &event)
     {
         mode = repos;
     }
+    if (textCtrl1->IsShown()) {
+        textCtrl1->Hide();
+    }
 }
 
 void guifrmMain::OnLMouseDOWN(wxMouseEvent &event)
@@ -491,6 +514,9 @@ void guifrmMain::NewFile(wxCommandEvent &event)
     graph.Clear();
     m_panel6->ClearBackground();
     Configure();
+    if (textCtrl1->IsShown()) {
+        textCtrl1->Hide();
+    }
 }
 
 void guifrmMain::RenderSize(wxSizeEvent &event)
@@ -517,6 +543,9 @@ void guifrmMain::ConnectMode(wxCommandEvent &event)
     {
         mode = mconnect;
     }
+    if (textCtrl1->IsShown()) {
+        textCtrl1->Hide();
+    }
 }
 
 void guifrmMain::NodeZoom(wxMouseEvent &event)
@@ -531,6 +560,12 @@ void guifrmMain::NodeZoom(wxMouseEvent &event)
     for (auto &i : graph.GetNodes())
     {
         i.GetRad() = defaultRad;
+    }
+
+    if (textCtrl1->IsShown()) {
+        textCtrl1->SetSize({defaultRad * 2, defaultRad});
+        textCtrl1->Move(graph.GetNodes()[texting_ind].GetPoint().x - graph.GetNodes()[texting_ind].GetRad(), 
+                graph.GetNodes()[texting_ind].GetPoint().y - graph.GetNodes()[texting_ind].GetRad() / 2);
     }
 
     m_panel6->Refresh();
@@ -562,7 +597,9 @@ void guifrmMain::OnOpen( wxCommandEvent& event) {
             return;
         //else: proceed asking to the user the new file to open
     }
-    
+    if (textCtrl1->IsShown()) {
+        textCtrl1->Hide();
+    }
     wxFileDialog openFileDialog(this, _("Open MGF file"), "", "",
                        "MGF files (*.mgf)|*.mgf", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
     if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -608,6 +645,9 @@ void guifrmMain::OnSaveAs( wxCommandEvent& event ) {
     if (saveFileDialog.ShowModal() == wxID_CANCEL)
         return;     // the user changed idea...
     
+    if (textCtrl1->IsShown()) {
+        textCtrl1->Hide();
+    }
     // save the current contents in the file;
     // this can be done with e.g. wxWidgets output streams:
     wxFileOutputStream output_stream(saveFileDialog.GetPath());
@@ -711,5 +751,16 @@ void guifrmMain::TextMode( wxCommandEvent& event ) {
         mode = none;
     } else {
         mode = text;
+    }
+    if (textCtrl1->IsShown()) {
+        textCtrl1->Hide();
+    }
+}
+
+void guifrmMain::OnStrongConnToggle(wxCommandEvent& event) {
+    strong_conn_toggled = !strong_conn_toggled;
+    if (strong_conn_toggled) {
+        m_panel6->Refresh();
+        m_panel6->Update();
     }
 }

@@ -8,6 +8,12 @@ Graph::Graph() {
     arcs = {};
     connectivity_matrix = {{}};
     gm = gnone;
+    used = {};
+    component = {};
+    order = {};
+    components = {{}};
+    g = {{}};
+    gr = {{}};
 
 }
 
@@ -250,4 +256,68 @@ wxString Graph::GraphToMGF() {
 
 
     return wxJoin(str, ' ');
+}
+
+void Graph::BuildComponents() {
+    int n = arcs.size();
+    components.clear();
+    BuildIncidents();
+
+    used.assign (n, false);
+
+	for (int i = 0; i < n; ++i) {
+        if (!used[i]) {
+            dfs1(i);
+        }
+    }
+		
+
+	used.assign (n, false);
+	for (int i = 0; i < n; ++i) {
+		int v = order[n-1-i];
+		if (!used[v]) {
+			dfs2 (v);
+			components.push_back(component);
+			component.clear();
+		}
+	}
+}
+
+void Graph::dfs1(int v) {
+    used[v] = true;
+	for (size_t i = 0; i < g[v].size(); ++i)
+		if (!used[ g[v][i] ]) {
+            dfs1(g[v][i]);
+        }
+			
+	order.push_back (v);
+}
+
+void Graph::dfs2 (int v) {
+    used[v] = true;
+	component.push_back (v);
+	for (size_t i=0; i< gr[v].size(); ++i) {
+        if (!used[ gr[v][i] ]) {
+            dfs2 (gr[v][i]);
+        }		
+    }
+}
+
+void Graph::BuildIncidents() {
+    g.assign(connectivity_matrix.size(), {});
+    gr.assign(connectivity_matrix.size(), {});
+
+    for (int i = 0; i < connectivity_matrix.size(); ++i) {
+        for (int j = 0; j < connectivity_matrix[i].size(); ++i) {
+            if (connectivity_matrix[i][j] == 1) {
+                g[i].push_back(j);
+                gr[j].push_back(i);
+            }
+        }
+    }
+}
+
+const std::vector<std::vector<int>>& Graph::GetComponents() {
+    BuildComponents();
+    return components;
 }
