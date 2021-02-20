@@ -646,8 +646,9 @@ Graph guifrmMain::MGFToGraph(const wxString& str) {
         painted = std::atoi(str.substr(last, str.find(" ", last)));
         last = str.find("grabbed\"", last) + 10;
         grabbed = std::atoi(str.substr(last, str.find(" ", last)));
-        last = str.find("label\"", last) + 8;
-        wxString label = str.substr(last, str.find(" \"", last) - 1);
+        last = str.find("label\"", last) + 9;
+        wxString label = str.substr(last, str.find(" \"", last) - last);
+        std::cout << label << "\n";
         found = str.find("{\"pt.x", last);
         // std::cout << pt.x << " " << pt.y << " " << r << "\n";
         while (g.HaveIntersection(pt, defaultRad)) {
