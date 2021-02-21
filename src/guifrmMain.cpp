@@ -123,8 +123,8 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
     {   
         texting_ind = graph.GetIntersectionInd({x, y});
         if (texting_ind != -1) {
-            textCtrl1->Move(graph.GetNodes()[texting_ind].GetPoint().x - graph.GetNodes()[texting_ind].GetRad(), 
-                graph.GetNodes()[texting_ind].GetPoint().y - graph.GetNodes()[texting_ind].GetRad() / 2);
+            m_panel6->CalcScrolledPosition(graph.GetNodes()[texting_ind].GetPoint().x, graph.GetNodes()[texting_ind].GetPoint().y, &x, &y);
+            textCtrl1->Move(x - graph.GetNodes()[texting_ind].GetRad(), y - graph.GetNodes()[texting_ind].GetRad() / 2);
             textCtrl1->SetSize({defaultRad * 2, defaultRad});
             textCtrl1->SetValue(graph.GetNodes()[texting_ind].GetLabel());
             textCtrl1->Show();
@@ -275,12 +275,13 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
         if (inter_ind != -1)
         {
             dc.SetPen(wxPen(*wxBLACK, 2, wxPENSTYLE_SOLID));
+            dc.SetBrush(wxBrush());
             wxPoint c(graph.GetNodes()[inter_ind].GetPoint());
             m_panel6->CalcScrolledPosition(c.x, c.y, &c.x, &c.y);
             dc.DrawCircle(c, graph.GetNodes()[inter_ind].GetRad());
             dc.DrawText(graph.GetNodes()[inter_ind].GetLabel(), 
-                graph.GetNodes()[inter_ind].GetPoint().x - 3 * graph.GetNodes()[inter_ind].GetRad() / 4, 
-                graph.GetNodes()[inter_ind].GetPoint().y - graph.GetNodes()[inter_ind].GetRad() / 3);
+                c.x - 3 * graph.GetNodes()[inter_ind].GetRad() / 4, 
+                c.y - graph.GetNodes()[inter_ind].GetRad() / 3);
             // dc.SetPen(wxPen(col1, 1, wxPENSTYLE_SOLID));
 
             for (const auto &i : graph.GetArcs())
