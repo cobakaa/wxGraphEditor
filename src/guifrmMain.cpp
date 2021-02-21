@@ -103,7 +103,7 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
             line_end = m_panel6->CalcUnscrolledPosition(line_end);
             int second = graph.GetIntersectionInd(line_end);
             //line_end = wxPoint(-1, -1);
-            if (second != -1 && line_end == wxPoint(x, y))
+            if (second != -1 )
             {
 
                 graph.AddArc(grabbed_ind, second);
