@@ -340,18 +340,14 @@ void guifrmMain::DrawPtrs(wxDC &dc, int first, int second, wxPen pen, wxBrush br
 
             double ang = M_PI / 8;
 
-            if (first > second)
-            {
+            if (first > second) {
 
                 start.x = x + defaultRad * cos(acos(cosa) + ang);
 
-                if (graph.GetNodes()[first].GetPoint().y > graph.GetNodes()[second].GetPoint().y)
-                {
+                if (graph.GetNodes()[first].GetPoint().y > graph.GetNodes()[second].GetPoint().y) {
                     start.y = y - defaultRad * sin(M_PI / 2 - asin(cosa) + ang);
                     end.y = w + defaultRad * sin(M_PI / 2 - asin(cosa) - ang);
-                }
-                else
-                {
+                } else {
                     start.y = y + defaultRad * sin(acos(cosa) + ang);
                     end.y = w - defaultRad * sin(acos(cosa) - ang);
                 }
@@ -369,19 +365,14 @@ void guifrmMain::DrawPtrs(wxDC &dc, int first, int second, wxPen pen, wxBrush br
 
                 dc.DrawLine(end, first_line);
                 dc.DrawLine(end, second_line);
-            }
-            else if (first < second)
-            {
+            } else if (first < second) {
 
                 start.x = x + defaultRad * cos(acos(cosa) - ang);
 
-                if (graph.GetNodes()[first].GetPoint().y < graph.GetNodes()[second].GetPoint().y)
-                {
+                if (graph.GetNodes()[first].GetPoint().y < graph.GetNodes()[second].GetPoint().y) {
                     start.y = y + defaultRad * sin(M_PI / 2 - asin(cosa) - ang);
                     end.y = w - defaultRad * sin(M_PI / 2 - asin(cosa) + ang);
-                }
-                else
-                {
+                } else {
                     start.y = y - defaultRad * sin(acos(cosa) - ang);
                     end.y = w + defaultRad * sin(acos(cosa) + ang);
                 }
@@ -399,9 +390,7 @@ void guifrmMain::DrawPtrs(wxDC &dc, int first, int second, wxPen pen, wxBrush br
 
                 dc.DrawLine(end, first_line);
                 dc.DrawLine(end, second_line);
-            }
-            else
-            {
+            } else {
                 wxBrush brush1(wxColour(255, 255, 255), wxBRUSHSTYLE_TRANSPARENT);
                 dc.SetBrush(brush1);
                 dc.DrawEllipticArc(x - defaultRad * 1.5, y - defaultRad * 1.95, defaultRad * 1.5, defaultRad * 2, 3, 250);
@@ -419,9 +408,7 @@ void guifrmMain::DrawPtrs(wxDC &dc, int first, int second, wxPen pen, wxBrush br
                 dc.DrawLine(end, first_line);
                 dc.DrawLine(end, second_line);
             }
-        }
-        else
-        {
+        } else {
 
             dc.DrawLine(start, end);
 
