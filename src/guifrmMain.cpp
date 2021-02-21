@@ -225,7 +225,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
             m_panel6->CalcScrolledPosition(i.GetPoint().x, i.GetPoint().y, &x, &y);
             dc.DrawCircle(x, y, i.GetRad());
             
-            dc.DrawText(i.GetLabel(), x - 3 * i.GetRad() / 4, y - i.GetRad() / 3);
+            dc.DrawText(i.GetLabel(), x - font.GetPixelSize().GetWidth() * i.GetLabel().size() / 3, y - i.GetRad() / 3);
         }
     }
 
@@ -245,7 +245,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
                                                 graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint().y, &x, &y);
                 dc.DrawCircle(x, y, graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad());
                 dc.DrawText(graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetLabel(), 
-                    x - 3 * graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 4, 
+                    x - font.GetPixelSize().GetWidth() * graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetLabel().size() / 3, 
                     y - graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 3);
 
                 for (int k = 0; k < graph.GetComponents().at(i).size(); ++k) {
@@ -286,7 +286,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
             m_panel6->CalcScrolledPosition(c.x, c.y, &c.x, &c.y);
             dc.DrawCircle(c, graph.GetNodes()[inter_ind].GetRad());
             dc.DrawText(graph.GetNodes()[inter_ind].GetLabel(), 
-                c.x - 3 * graph.GetNodes()[inter_ind].GetRad() / 4, 
+                c.x - graph.GetNodes()[inter_ind].GetLabel().size() * font.GetPixelSize().GetWidth() / 3, 
                 c.y - graph.GetNodes()[inter_ind].GetRad() / 3);
             // dc.SetPen(wxPen(col1, 1, wxPENSTYLE_SOLID));
 
