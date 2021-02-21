@@ -281,7 +281,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
         if (inter_ind != -1)
         {
             dc.SetPen(wxPen(*wxBLACK, 2, wxPENSTYLE_SOLID));
-            dc.SetBrush(wxBrush());
+            dc.SetBrush(wxBrush(*wxWHITE_BRUSH));
             wxPoint c(graph.GetNodes()[inter_ind].GetPoint());
             m_panel6->CalcScrolledPosition(c.x, c.y, &c.x, &c.y);
             dc.DrawCircle(c, graph.GetNodes()[inter_ind].GetRad());
