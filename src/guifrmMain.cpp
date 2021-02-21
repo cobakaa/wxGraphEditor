@@ -579,8 +579,9 @@ void guifrmMain::NodeZoom(wxMouseEvent &event)
 
     if (textCtrl1->IsShown()) {
         textCtrl1->SetSize({defaultRad * 2, defaultRad});
-        textCtrl1->Move(graph.GetNodes()[texting_ind].GetPoint().x - graph.GetNodes()[texting_ind].GetRad(), 
-                graph.GetNodes()[texting_ind].GetPoint().y - graph.GetNodes()[texting_ind].GetRad() / 2);
+        wxPoint c = {graph.GetNodes()[texting_ind].GetPoint().x, graph.GetNodes()[texting_ind].GetPoint().y};
+        m_panel6->CalcScrolledPosition(c.x, c.y, &c.x, &c.y);
+        textCtrl1->Move(c.x - graph.GetNodes()[texting_ind].GetRad(), c.y - graph.GetNodes()[texting_ind].GetRad() / 2);
         // wxFont font = wxFont({2 * defaultRad / 3, 3 * defaultRad / 4}, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
         // textCtrl1->SetFont(font);
     }
