@@ -267,6 +267,7 @@ wxString Graph::GraphToMGF() {
 void Graph::BuildComponents() {
     int n = nodes.size();
     components.clear();
+    order.clear();
     BuildIncidents();
     // std::cout << "BuildIncidents OK" << "\n";
 
@@ -278,6 +279,10 @@ void Graph::BuildComponents() {
         }
     }
 		
+    // for (auto i : order) {
+    //     std::cout << i << " ";
+    // }
+    // std::cout << "\n";
 
 	used.assign (n, false);
 	for (int i = 0; i < n; ++i) {
@@ -285,10 +290,10 @@ void Graph::BuildComponents() {
 		if (!used[v]) {
 			dfs2 (v);
 			components.push_back(component);
-            for (auto i : component) {
-                std::cout << i << " ";
-            }
-            std::cout << "\n";
+            // for (auto i : component) {
+            //     std::cout << i << " ";
+            // }
+            // std::cout << "\n";
 			component.clear();
 		}
 	}

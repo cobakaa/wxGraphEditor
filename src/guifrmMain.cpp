@@ -235,7 +235,28 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
         dc.DrawLine(wxPoint(x, y), line_end);
     }
 
-    if (mode == mdelete)
+    if (strong_conn_toggled) {
+        for (int i = 0; i < graph.GetComponents().size(); ++i) {
+            col1 = cols[i % 5];
+            dc.SetPen(wxPen(col1, 2, wxPENSTYLE_SOLID));
+            for (int j = 0; j < graph.GetComponents().at(i).size(); ++j) {
+                dc.DrawCircle(graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint(), graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad());
+                dc.DrawText(graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetLabel(), 
+                    graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint().x - 3 * graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 4, 
+                    graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint().y - graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 3);
+
+                for (int k = 0; k < graph.GetComponents().at(i).size(); ++k) {
+                    if (graph.GetConnMatrix()[graph.GetComponents().at(i).at(j)][graph.GetComponents().at(i).at(k)] == 1) {
+                        DrawPtrs(dc, graph.GetComponents().at(i).at(j), graph.GetComponents().at(i).at(k));
+                        // std::cout << "PTRS DRAWED" << "\n";
+                    }
+                    
+                }
+            }
+        } 
+    }
+
+        if (mode == mdelete)
     {
         const wxPoint pt = wxGetMousePosition();
         wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
@@ -247,7 +268,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
 
         if (inter_ind != -1)
         {
-            dc.SetPen(wxPen(col1, 2, wxPENSTYLE_SOLID));
+            dc.SetPen(wxPen(*wxBLACK, 2, wxPENSTYLE_SOLID));
             wxPoint c(graph.GetNodes()[inter_ind].GetPoint());
             m_panel6->CalcScrolledPosition(c.x, c.y, &c.x, &c.y);
             dc.DrawCircle(c, graph.GetNodes()[inter_ind].GetRad());
@@ -273,7 +294,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
             if ((abs((mx - ax) * (by - ay) - (bx - ax) * (my - ay)) <= defaultRad * 25 && 
             (min(ay, by) <= my && (max(ay, by) >= my) && min(ax, bx) <= mx && max(ax, bx) >= mx)) || 
             (i.first == i.second && wxRegion(ax - defaultRad * 1.5, ay - defaultRad * 1.95, defaultRad * 1.5, defaultRad * 2).Contains(x, y))) {
-                dc.SetPen(wxPen(col1, 2, wxPENSTYLE_SOLID));
+                dc.SetPen(wxPen(*wxBLACK, 2, wxPENSTYLE_SOLID));
                 DrawPtrs(dc, i.first, i.second);
                     
             }
@@ -284,26 +305,6 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
         // }
     }
 
-    if (strong_conn_toggled) {
-        for (int i = 0; i < graph.GetComponents().size(); ++i) {
-            col1 = cols[i % 5];
-            dc.SetPen(wxPen(col1, 2, wxPENSTYLE_SOLID));
-            for (int j = 0; j < graph.GetComponents().at(i).size(); ++j) {
-                dc.DrawCircle(graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint(), graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad());
-                dc.DrawText(graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetLabel(), 
-                    graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint().x - 3 * graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 4, 
-                    graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint().y - graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 3);
-
-                for (int k = 0; k < graph.GetComponents().at(i).size(); ++k) {
-                    if (graph.GetConnMatrix()[graph.GetComponents().at(i).at(j)][graph.GetComponents().at(i).at(k)] == 1) {
-                        DrawPtrs(dc, graph.GetComponents().at(i).at(j), graph.GetComponents().at(i).at(k));
-                        // std::cout << "PTRS DRAWED" << "\n";
-                    }
-                    
-                }
-            }
-        } 
-    }
 }
 
 void guifrmMain::DrawPtrs(wxDC &dc, int first, int second)
