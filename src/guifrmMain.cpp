@@ -237,7 +237,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
 
     if (strong_conn_toggled) {
         for (int i = 0; i < graph.GetComponents().size(); ++i) {
-            col1 = cols[i % 5];
+            col1 = cols[(graph.GetComponents().size() - 1 - i) % 5];
             dc.SetPen(wxPen(col1, 2, wxPENSTYLE_SOLID));
             for (int j = 0; j < graph.GetComponents().at(i).size(); ++j) {
                 dc.DrawCircle(graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint(), graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad());
