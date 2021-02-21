@@ -56,6 +56,7 @@ Graph::Graph(wxVector<Node> nodes, std::vector<std::pair<int, int>> arcs) {
     arcs = arcs;
     connectivity_matrix = BuildConnMatrix();
     gm = gnone;
+    BuildComponents();
 }
 
 wxVector<Node>& Graph::GetNodes() {
@@ -93,6 +94,7 @@ void Graph::AddNode(wxPoint pt, wxCoord r, wxString label) {
 
     std::cout << "Node added" << std::endl;
     connectivity_matrix = BuildConnMatrix();
+    BuildComponents();
 
 }
 
@@ -146,10 +148,11 @@ void Graph::DeleteNode(wxPoint pt) {
         std::cout << "Arcs updated" << "\n";
 
         for (auto& i : arcs) {
-        std::cout << i.first << " " <<  i.second << " " << nodes.size() << "\n";
-    }
+            std::cout << i.first << " " <<  i.second << " " << nodes.size() << "\n";
+        }
 
         connectivity_matrix = BuildConnMatrix();
+        BuildComponents();
     }
     
     //add building matrix
@@ -160,6 +163,7 @@ void Graph::Clear() {
     arcs.clear();
     gm = gnone;
     connectivity_matrix.clear();
+    BuildComponents();
 }
 
 bool Graph::Empty() {
@@ -189,6 +193,7 @@ void Graph::AddArc(int x, int y) {
     }
 
     connectivity_matrix = BuildConnMatrix();
+    BuildComponents();
     
 }
 
@@ -213,6 +218,7 @@ void Graph::DeleteArc(int x, int y) {
     }
 
     connectivity_matrix = BuildConnMatrix();
+    BuildComponents();
 }
 
 wxString Graph::GraphToMGF() {
@@ -259,9 +265,10 @@ wxString Graph::GraphToMGF() {
 }
 
 void Graph::BuildComponents() {
-    int n = arcs.size();
+    int n = nodes.size();
     components.clear();
     BuildIncidents();
+    // std::cout << "BuildIncidents OK" << "\n";
 
     used.assign (n, false);
 
@@ -278,6 +285,10 @@ void Graph::BuildComponents() {
 		if (!used[v]) {
 			dfs2 (v);
 			components.push_back(component);
+            for (auto i : component) {
+                std::cout << i << " ";
+            }
+            std::cout << "\n";
 			component.clear();
 		}
 	}
@@ -304,20 +315,20 @@ void Graph::dfs2 (int v) {
 }
 
 void Graph::BuildIncidents() {
-    g.assign(connectivity_matrix.size(), {});
-    gr.assign(connectivity_matrix.size(), {});
+    g.assign(nodes.size(), {});
+    gr.assign(nodes.size(), {});
 
-    for (int i = 0; i < connectivity_matrix.size(); ++i) {
-        for (int j = 0; j < connectivity_matrix[i].size(); ++i) {
-            if (connectivity_matrix[i][j] == 1) {
-                g[i].push_back(j);
-                gr[j].push_back(i);
-            }
-        }
+    // std::cout << "KEKW" << "\n";
+
+    for (const auto& i : arcs) {
+        g[i.first].push_back(i.second);
+        gr[i.second].push_back(i.first);
     }
+    // std::cout << "KEKWAIT" << "\n";
 }
 
 const std::vector<std::vector<int>>& Graph::GetComponents() {
-    BuildComponents();
+    // BuildComponents();
+    // std::cout << "builded" << "\n";
     return components;
 }

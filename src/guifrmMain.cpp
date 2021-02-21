@@ -23,6 +23,7 @@ guifrmMain::guifrmMain(wxWindow *parent)
     saved = true;
     texting_ind = -1;
     strong_conn_toggled = false;
+    cols = {*wxBLUE, *wxCYAN, *wxGREEN, *wxYELLOW, *wxRED};
 }
 
 void guifrmMain::Unsaved() {
@@ -250,7 +251,9 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
             wxPoint c(graph.GetNodes()[inter_ind].GetPoint());
             m_panel6->CalcScrolledPosition(c.x, c.y, &c.x, &c.y);
             dc.DrawCircle(c, graph.GetNodes()[inter_ind].GetRad());
-            dc.DrawText(graph.GetNodes()[inter_ind].GetLabel(), x - 3 * graph.GetNodes()[inter_ind].GetRad() / 4, y - graph.GetNodes()[inter_ind].GetRad() / 3);
+            dc.DrawText(graph.GetNodes()[inter_ind].GetLabel(), 
+                graph.GetNodes()[inter_ind].GetPoint().x - 3 * graph.GetNodes()[inter_ind].GetRad() / 4, 
+                graph.GetNodes()[inter_ind].GetPoint().y - graph.GetNodes()[inter_ind].GetRad() / 3);
             // dc.SetPen(wxPen(col1, 1, wxPENSTYLE_SOLID));
 
             for (const auto &i : graph.GetArcs())
@@ -283,10 +286,22 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
 
     if (strong_conn_toggled) {
         for (int i = 0; i < graph.GetComponents().size(); ++i) {
+            col1 = cols[i % 5];
+            dc.SetPen(wxPen(col1, 2, wxPENSTYLE_SOLID));
             for (int j = 0; j < graph.GetComponents().at(i).size(); ++j) {
-                std::cout << graph.GetComponents().at(i).at(j) << " ";
+                dc.DrawCircle(graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint(), graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad());
+                dc.DrawText(graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetLabel(), 
+                    graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint().x - 3 * graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 4, 
+                    graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint().y - graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 3);
+
+                for (int k = 0; k < graph.GetComponents().at(i).size(); ++k) {
+                    if (graph.GetConnMatrix()[graph.GetComponents().at(i).at(j)][graph.GetComponents().at(i).at(k)] == 1) {
+                        DrawPtrs(dc, graph.GetComponents().at(i).at(j), graph.GetComponents().at(i).at(k));
+                        // std::cout << "PTRS DRAWED" << "\n";
+                    }
+                    
+                }
             }
-             std::cout << "\n";
         } 
     }
 }
@@ -759,8 +774,8 @@ void guifrmMain::TextMode( wxCommandEvent& event ) {
 
 void guifrmMain::OnStrongConnToggle(wxCommandEvent& event) {
     strong_conn_toggled = !strong_conn_toggled;
-    if (strong_conn_toggled) {
-        m_panel6->Refresh();
-        m_panel6->Update();
-    }
+
+    m_panel6->Refresh();
+    m_panel6->Update();
+        
 }

@@ -68,6 +68,7 @@ class guifrmMain : public frmMain
 		bool saved;
 		int texting_ind;
 		bool strong_conn_toggled;
+		std::vector<wxColour> cols;
 
 };
 
