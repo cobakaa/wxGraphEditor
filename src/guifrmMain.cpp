@@ -200,7 +200,13 @@ void guifrmMain::DeleteMode(wxCommandEvent &event)
 void guifrmMain::RenderPaint(wxPaintEvent &event)
 {
 
-    wxPaintDC dc(m_panel6);
+    wxPaintDC pdc(m_panel6);
+
+    wxGCDC gdc(pdc);
+    wxDC &dc = (wxDC&) gdc;
+
+    PrepareDC(dc);
+
      
     wxColour col1;
     col1.Set(wxT("#0c0c0c"));
@@ -209,7 +215,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
     dc.SetPen(wxPen(col1, 1, wxPENSTYLE_SOLID));
 
     wxCoord x, y, z, w;
-    wxFont font = wxFont({defaultRad / 4, defaultRad / 2}, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    wxFont font = wxFont({2 * defaultRad / 3, 3 * defaultRad / 4}, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
     dc.SetFont(font);
 
     for (auto i : graph.GetNodes())
@@ -257,9 +263,9 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
     {
         m_panel6->CalcScrolledPosition(graph.GetNodes()[grabbed_ind].GetPoint().x, graph.GetNodes()[grabbed_ind].GetPoint().y, &x, &y);
         line_end = m_panel6->CalcScrolledPosition(line_end);
-        dc.SetPen(wxPen());
+        dc.SetPen(wxPen( wxColor(0,0,0), 1 ));
 
-        dc.DrawLine(wxPoint(x, y), line_end);
+        dc.DrawLine({x, y}, line_end);
     }
 
     if (mode == mdelete)
@@ -575,8 +581,8 @@ void guifrmMain::NodeZoom(wxMouseEvent &event)
         textCtrl1->SetSize({defaultRad * 2, defaultRad});
         textCtrl1->Move(graph.GetNodes()[texting_ind].GetPoint().x - graph.GetNodes()[texting_ind].GetRad(), 
                 graph.GetNodes()[texting_ind].GetPoint().y - graph.GetNodes()[texting_ind].GetRad() / 2);
-        wxFont font = wxFont({defaultRad / 4, defaultRad / 2}, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-        textCtrl1->SetFont(font);
+        // wxFont font = wxFont({2 * defaultRad / 3, 3 * defaultRad / 4}, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+        // textCtrl1->SetFont(font);
     }
 
     m_panel6->Refresh();
