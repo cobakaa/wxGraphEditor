@@ -13,7 +13,6 @@ Node::Node(wxPoint pt_, wxCoord rad_, wxString label_)
 {
     pt = pt_;
     rad = rad_;
-    std::cout << "Node created" << "\n";
     painted = false;
     grabbed = false;
     label = label_;

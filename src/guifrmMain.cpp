@@ -8,6 +8,7 @@
 #include <wx/dcbuffer.h>
 #include <wx/filedlg.h>
 #include <wx/wfstream.h>
+#include <wx/dcgraph.h>
 
 const wxCoord const_defaultRead = 20;
 
@@ -23,7 +24,9 @@ guifrmMain::guifrmMain(wxWindow *parent)
     saved = true;
     texting_ind = -1;
     strong_conn_toggled = false;
-    cols = {*wxBLUE, *wxCYAN, *wxGREEN, *wxYELLOW, *wxRED};
+    cols = {{*wxBLUE,  wxColour(204, 204, 255)}, {*wxCYAN,  wxColour(204, 255, 255)}, {*wxGREEN,  wxColour(204, 255, 204)}, 
+        {*wxYELLOW,  wxColour(255, 255, 204)}, {*wxRED, wxColour(255, 204, 204)}, {wxColour(255, 128, 0), wxColour(255, 229, 204)},
+        {wxColour(255, 0, 255), wxColour(255, 204, 255)}};
 }
 
 void guifrmMain::Unsaved() {
@@ -150,11 +153,8 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
 }
 
 void guifrmMain::OnTextEnter(wxCommandEvent& event) {
-    std::cout << "_________" << "\n";
     if (texting_ind != -1) {
-        std::cout << "_________" << "\n";
         wxString str = textCtrl1->GetLineText(0);
-        std::cout << str << "\n";
         graph.GetNodes()[texting_ind].GetLabel() = str;
         texting_ind = -1;
 
@@ -201,6 +201,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
 {
 
     wxPaintDC dc(m_panel6);
+     
     wxColour col1;
     col1.Set(wxT("#0c0c0c"));
     
@@ -227,28 +228,24 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
         DrawPtrs(dc, i.first, i.second);
     }
 
-    if (grabbed_ind != -1 && mode == mconnect)
-    {
-        m_panel6->CalcScrolledPosition(graph.GetNodes()[grabbed_ind].GetPoint().x, graph.GetNodes()[grabbed_ind].GetPoint().y, &x, &y);
-        line_end = m_panel6->CalcScrolledPosition(line_end);
-
-        dc.DrawLine(wxPoint(x, y), line_end);
-    }
-
     if (strong_conn_toggled) {
         for (int i = 0; i < graph.GetComponents().size(); ++i) {
-            col1 = cols[(graph.GetComponents().size() - 1 - i) % 5];
-            dc.SetPen(wxPen(col1, 2, wxPENSTYLE_SOLID));
+            std::pair<wxColour, wxColour> col1 = cols[(graph.GetComponents().size() - 1 - i) % cols.size()];
+            dc.SetPen(wxPen(col1.first, 2, wxPENSTYLE_SOLID));
+            // col1 = wxColour((col1.Red() + 100) % 255, (col1.Green() + 100) % 255, (col1.Blue() + 100) % 255);
+            dc.SetBrush(wxBrush(col1.second, wxBRUSHSTYLE_SOLID));
             for (int j = 0; j < graph.GetComponents().at(i).size(); ++j) {
-                dc.DrawCircle(graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint(), graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad());
+                m_panel6->CalcScrolledPosition(graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint().x, 
+                                                graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint().y, &x, &y);
+                dc.DrawCircle(x, y, graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad());
                 dc.DrawText(graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetLabel(), 
-                    graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint().x - 3 * graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 4, 
-                    graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetPoint().y - graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 3);
+                    x - 3 * graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 4, 
+                    y - graph.GetNodes()[graph.GetComponents().at(i).at(j)].GetRad() / 3);
 
                 for (int k = 0; k < graph.GetComponents().at(i).size(); ++k) {
                     if (graph.GetConnMatrix()[graph.GetComponents().at(i).at(j)][graph.GetComponents().at(i).at(k)] == 1) {
-                        DrawPtrs(dc, graph.GetComponents().at(i).at(j), graph.GetComponents().at(i).at(k));
-                        // std::cout << "PTRS DRAWED" << "\n";
+                        DrawPtrs(dc, graph.GetComponents().at(i).at(j), graph.GetComponents().at(i).at(k), dc.GetPen(), dc.GetBrush());
+
                     }
                     
                 }
@@ -256,7 +253,16 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
         } 
     }
 
-        if (mode == mdelete)
+    if (grabbed_ind != -1 && mode == mconnect)
+    {
+        m_panel6->CalcScrolledPosition(graph.GetNodes()[grabbed_ind].GetPoint().x, graph.GetNodes()[grabbed_ind].GetPoint().y, &x, &y);
+        line_end = m_panel6->CalcScrolledPosition(line_end);
+        dc.SetPen(wxPen());
+
+        dc.DrawLine(wxPoint(x, y), line_end);
+    }
+
+    if (mode == mdelete)
     {
         const wxPoint pt = wxGetMousePosition();
         wxCoord x = pt.x - m_panel6->GetScreenPosition().x;
@@ -304,10 +310,11 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
 
         // }
     }
+    // dc.StrokePath()
 
 }
 
-void guifrmMain::DrawPtrs(wxDC &dc, int first, int second)
+void guifrmMain::DrawPtrs(wxDC &dc, int first, int second, wxPen pen, wxBrush brush)
 {
     wxPoint start, end;
     wxCoord x, y, z, w;
@@ -395,10 +402,10 @@ void guifrmMain::DrawPtrs(wxDC &dc, int first, int second)
             }
             else
             {
-                wxBrush brush(wxColour(255, 255, 255), wxBRUSHSTYLE_TRANSPARENT);
-                dc.SetBrush(brush);
+                wxBrush brush1(wxColour(255, 255, 255), wxBRUSHSTYLE_TRANSPARENT);
+                dc.SetBrush(brush1);
                 dc.DrawEllipticArc(x - defaultRad * 1.5, y - defaultRad * 1.95, defaultRad * 1.5, defaultRad * 2, 3, 250);
-                dc.SetBrush(wxBrush());
+                dc.SetBrush(brush);
 
                 end.x = x - defaultRad;
                 end.y = y;
@@ -440,9 +447,7 @@ void guifrmMain::AddCircle(wxPoint pt, wxCoord r)
 
     if (!graph.HaveIntersection(pt, r))
     {
-        std::cout << "Node added start" << "\n";
         graph.AddNode(pt, r);
-        std::cout << "Node added end" << "\n";
     }
 }
 
@@ -582,6 +587,8 @@ void guifrmMain::NodeZoom(wxMouseEvent &event)
         textCtrl1->SetSize({defaultRad * 2, defaultRad});
         textCtrl1->Move(graph.GetNodes()[texting_ind].GetPoint().x - graph.GetNodes()[texting_ind].GetRad(), 
                 graph.GetNodes()[texting_ind].GetPoint().y - graph.GetNodes()[texting_ind].GetRad() / 2);
+        wxFont font = wxFont({defaultRad / 4, defaultRad / 2}, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+        textCtrl1->SetFont(font);
     }
 
     m_panel6->Refresh();
@@ -685,14 +692,13 @@ void guifrmMain::OnSaveAs( wxCommandEvent& event ) {
 Graph guifrmMain::MGFToGraph(const wxString& str) {
     Graph g;
     int last = str.Find("nodes");
-    // std::cout << last << "\n";
     int found = 0;
+
     while (found != wxNOT_FOUND) {
         wxPoint pt;
         wxCoord r;
         last = str.find("pt.x\"", last) + 7;
         pt.x = std::atoi(str.substr(last, str.find(" ", last)));
-        std::cout << pt.x << "\n";
         last = str.find("pt.y\"", last) + 7;
         pt.y = std::atoi(str.substr(last, str.find(" ", last)));
         last = str.find("rad\"", last) + 6;
@@ -704,9 +710,8 @@ Graph guifrmMain::MGFToGraph(const wxString& str) {
         grabbed = std::atoi(str.substr(last, str.find(" ", last)));
         last = str.find("label\"", last) + 9;
         wxString label = str.substr(last, str.find(" \"", last) - last);
-        std::cout << label << "\n";
         found = str.find("{\"pt.x", last);
-        // std::cout << pt.x << " " << pt.y << " " << r << "\n";
+
         while (g.HaveIntersection(pt, defaultRad)) {
             if (defaultRad > 2) {
                 defaultRad -= 2;

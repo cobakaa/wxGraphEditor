@@ -39,15 +39,6 @@ std::vector<std::vector<int>> Graph::BuildConnMatrix() {
         }
     }
 
-    // std::cout << "Conn matrix" << "\n";
-    // for (int i = 0; i < matrix.size(); ++i) {
-    //     for (int j = 0; j < matrix.size(); ++j) {
-    //         std::cout << matrix[i][j] << " ";
-    //     }
-    //     std::cout << '\n';
-    // }
-    // std::cout << '\n';
-
     return matrix;
 }
 
@@ -74,25 +65,16 @@ bool Graph::HaveIntersection(wxPoint pt, wxCoord r) {
         }
     }
 
-    // std::cout << (inter ? "Inter TRUE" : "Inter FALSE") << "\n";
-
     return inter;
 }
 
 void Graph::AddNode(wxPoint pt, wxCoord r, wxString label) {
 
-    std::cout << nodes.capacity() << std::endl;
-
     Node n = Node(pt, r, label);
 
     nodes.push_back(n);
     
-    
-    std::cout << "PUSHED" << std::endl;
-    std::cout << nodes.capacity() << std::endl;
     nodes[nodes.size() - 1].GetPainted() = true;
-
-    std::cout << "Node added" << std::endl;
     connectivity_matrix = BuildConnMatrix();
     BuildComponents();
 
@@ -110,8 +92,6 @@ int Graph::GetIntersectionInd(wxPoint pt) {
         }
         cnt++;
     }
-
-    // std::cout << (getInter ? "Inter TRUE" : "Inter FALSE") << "\n";
 
     return getInter ? cnt : -1;
 }
@@ -131,7 +111,6 @@ void Graph::DeleteNode(wxPoint pt) {
             }
         }
 
-        std::cout << "Arcs deleted" << "\n";
         if (!nodes.empty()) {
             nodes.erase(nodes.begin() + cnt);
         }
@@ -143,12 +122,6 @@ void Graph::DeleteNode(wxPoint pt) {
             if ((*it).second > cnt) {
                 (*it).second -= 1;
             }
-        }
-
-        std::cout << "Arcs updated" << "\n";
-
-        for (auto& i : arcs) {
-            std::cout << i.first << " " <<  i.second << " " << nodes.size() << "\n";
         }
 
         connectivity_matrix = BuildConnMatrix();
@@ -184,12 +157,9 @@ void Graph::AddArc(int x, int y) {
 
     if (!exists) {
         arcs.push_back(p);
-    }
-
-    std::cout << (exists ? "Exists TRUE" : "Exists FALSE") << "\n";
-
-    for (auto& i : arcs) {
-        std::cout << i.first << " " << i.second << " " << nodes.size() << "\n";
+        if (gm == undirected) {
+            arcs.push_back({p.second, p.first});
+        }
     }
 
     connectivity_matrix = BuildConnMatrix();
@@ -214,6 +184,15 @@ void Graph::DeleteArc(int x, int y) {
         if ((*it).first == x && (*it).second == y) {
             arcs.erase(it);
             break;
+        }
+    }
+
+    if (gm == undirected) {
+        for (auto it = arcs.begin(); it != arcs.end(); it++) {
+            if ((*it).first == y && (*it).second == x) {
+                arcs.erase(it);
+                break;
+            }
         }
     }
 
@@ -269,7 +248,6 @@ void Graph::BuildComponents() {
     components.clear();
     order.clear();
     BuildIncidents();
-    // std::cout << "BuildIncidents OK" << "\n";
 
     used.assign (n, false);
 
@@ -278,11 +256,6 @@ void Graph::BuildComponents() {
             dfs1(i);
         }
     }
-		
-    // for (auto i : order) {
-    //     std::cout << i << " ";
-    // }
-    // std::cout << "\n";
 
 	used.assign (n, false);
 	for (int i = 0; i < n; ++i) {
@@ -290,10 +263,7 @@ void Graph::BuildComponents() {
 		if (!used[v]) {
 			dfs2 (v);
 			components.push_back(component);
-            // for (auto i : component) {
-            //     std::cout << i << " ";
-            // }
-            // std::cout << "\n";
+
 			component.clear();
 		}
 	}
@@ -323,17 +293,13 @@ void Graph::BuildIncidents() {
     g.assign(nodes.size(), {});
     gr.assign(nodes.size(), {});
 
-    // std::cout << "KEKW" << "\n";
-
     for (const auto& i : arcs) {
         g[i.first].push_back(i.second);
         gr[i.second].push_back(i.first);
     }
-    // std::cout << "KEKWAIT" << "\n";
 }
 
 const std::vector<std::vector<int>>& Graph::GetComponents() {
-    // BuildComponents();
-    // std::cout << "builded" << "\n";
+
     return components;
 }

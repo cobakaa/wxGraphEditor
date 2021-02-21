@@ -46,7 +46,7 @@ class guifrmMain : public frmMain
 		void AddCircle(wxPoint pt, wxCoord r);
 		void DeleteCircle(wxPoint p);
 
-		void DrawPtrs(wxDC& dc, int first, int second);
+		void DrawPtrs(wxDC& dc, int first, int second, wxPen pen = wxPen(), wxBrush brush = wxBrush());
 
 		void Configure();
 
@@ -68,7 +68,7 @@ class guifrmMain : public frmMain
 		bool saved;
 		int texting_ind;
 		bool strong_conn_toggled;
-		std::vector<wxColour> cols;
+		std::vector<std::pair<wxColour, wxColour>> cols;
 
 };
 
