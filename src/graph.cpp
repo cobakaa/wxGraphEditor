@@ -262,10 +262,6 @@ void Graph::BuildComponents() {
 		int v = order[n-1-i];
 		if (!used[v]) {
 			dfs2 (v);
-
-            std::sort(component.begin(), component.end(), [](int x, int y) {
-                return x < y;
-            });
 			components.push_back(component);
 
 			component.clear();
@@ -273,7 +269,15 @@ void Graph::BuildComponents() {
 	}
 
     std::sort(components.begin(), components.end(), [](const std::vector<int>& x, const std::vector<int>& y) {
-        return *x.begin() < *y.begin();
+        int xmin = *x.begin(), ymin = *y.begin();
+        for (const auto& i : x) {
+            xmin = min(i, xmin);
+        }
+
+        for (const auto& i : y) {
+            ymin = min(i, ymin);
+        }
+        return xmin < ymin;
     });
 }
 
