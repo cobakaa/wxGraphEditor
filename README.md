@@ -1,3 +1,3 @@
 # wxPaintingTest
 
-Graph editor using C++ with wxWidgets.
+Graph editor using C++ built with wxWidgets.
