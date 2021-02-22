@@ -99,6 +99,13 @@ elseif (WIN32)
 
 endif ()
 
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+        set (EXECUTABLE_OUTPUT_PATH  cmake-build-debug)
+
+elseif(CMAKE_BUILD_TYPE MATCHES Release)
+        set (EXECUTABLE_OUTPUT_PATH  cmake-build)
+endif()
+
 add_executable(wxPaintingTest
                 include/customDialog.h
                 include/graph.h
@@ -113,6 +120,7 @@ add_executable(wxPaintingTest
                 src/main.cpp
                 src/node.cpp
                 src/tools.cpp)
+                
 
 
         target_link_libraries(
