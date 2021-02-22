@@ -17,7 +17,7 @@ public:
 };
 
 
-IMPLEMENT_APP(wxMyApp)
+wxIMPLEMENT_APP(wxMyApp);
 
 
 #include "../include/gui.h"
