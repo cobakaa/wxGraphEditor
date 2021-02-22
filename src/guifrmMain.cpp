@@ -236,7 +236,7 @@ void guifrmMain::RenderPaint(wxPaintEvent &event)
 
     if (strong_conn_toggled) {
         for (int i = 0; i < graph.GetComponents().size(); ++i) {
-            std::pair<wxColour, wxColour> col1 = cols[(graph.GetComponents().size() - 1 - i) % cols.size()];
+            std::pair<wxColour, wxColour> col1 = cols[i % cols.size()];
             dc.SetPen(wxPen(col1.first, 2, wxPENSTYLE_SOLID));
             // col1 = wxColour((col1.Red() + 100) % 255, (col1.Green() + 100) % 255, (col1.Blue() + 100) % 255);
             dc.SetBrush(wxBrush(col1.second, wxBRUSHSTYLE_SOLID));
@@ -509,6 +509,9 @@ void guifrmMain::OnMouseMove(wxMouseEvent &event)
                 graph.GetNodes()[grabbed_ind].GetPoint().x = x;
                 graph.GetNodes()[grabbed_ind].GetPoint().y = y;
             }
+            
+            m_panel6->Refresh();
+            m_panel6->Update();
         }
     }
     else if (mode == mconnect)
@@ -517,11 +520,14 @@ void guifrmMain::OnMouseMove(wxMouseEvent &event)
         if (grabbed_ind != -1)
         {
             line_end = wxPoint(x, y);
+            m_panel6->Refresh();
+            m_panel6->Update();
         }
+    } else if (mode == mdelete) {
+        m_panel6->Refresh();
+        m_panel6->Update();
     }
 
-    m_panel6->Refresh();
-    m_panel6->Update();
 }
 
 void guifrmMain::NewFile(wxCommandEvent &event)

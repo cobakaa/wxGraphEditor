@@ -262,11 +262,19 @@ void Graph::BuildComponents() {
 		int v = order[n-1-i];
 		if (!used[v]) {
 			dfs2 (v);
+
+            std::sort(component.begin(), component.end(), [](int x, int y) {
+                return x < y;
+            });
 			components.push_back(component);
 
 			component.clear();
 		}
 	}
+
+    std::sort(components.begin(), components.end(), [](const std::vector<int>& x, const std::vector<int>& y) {
+        return *x.begin() < *y.begin();
+    });
 }
 
 void Graph::dfs1(int v) {
