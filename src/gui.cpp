@@ -29,6 +29,7 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	m_tool6 = m_toolBar1->AddTool( wxID_ANY, wxT("tool"), wxBitmap( wxT("../../img/sol.bmp"), wxBITMAP_TYPE_ANY ), wxNullBitmap, wxITEM_CHECK, wxEmptyString, wxEmptyString, NULL );
 
+	m_tool7 = m_toolBar1->AddTool( wxID_ANY, wxT("tool"), wxBitmap( wxT("../../img/table.bmp"), wxBITMAP_TYPE_ANY ), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL );
 
 	m_toolBar1->Realize();
 
@@ -81,6 +82,8 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	this->Connect( m_tool4->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::ConnectMode ) );
 	this->Connect( m_tool5->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::TextMode ) );
 	this->Connect( m_tool6->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::OnStrongConnToggle ) );
+	this->Connect( m_tool7->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::OnTable ) );
+
 	m_panel6->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( frmMain::OnLMouseDOWN ), NULL, this );
 	m_panel6->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( frmMain::OnLMouseUP ), NULL, this );
 	m_panel6->Connect( wxEVT_MOTION, wxMouseEventHandler( frmMain::OnMouseMove ), NULL, this );
@@ -105,6 +108,7 @@ frmMain::~frmMain()
 	this->Disconnect( m_tool4->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::ConnectMode ) );
 	this->Disconnect( m_tool5->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::TextMode ) );
 	this->Disconnect( m_tool6->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::OnStrongConnToggle ) );
+	this->Disconnect( m_tool7->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( frmMain::OnTable ) );
 	m_panel6->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( frmMain::OnLMouseDOWN ), NULL, this );
 	m_panel6->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( frmMain::OnLMouseUP ), NULL, this );
 	m_panel6->Disconnect( wxEVT_MOTION, wxMouseEventHandler( frmMain::OnMouseMove ), NULL, this );

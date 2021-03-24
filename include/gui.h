@@ -43,6 +43,7 @@ class frmMain : public wxFrame
 		wxToolBarToolBase* m_tool5;
 		wxToolBarToolBase* m_tool6;
 		wxScrolledWindow* m_panel6;
+		wxToolBarToolBase* m_tool7;
 		wxMenuBar* m_menubar1;
 		wxMenu* m_menu1;
 		wxTextCtrl* textCtrl1;
@@ -72,6 +73,7 @@ class frmMain : public wxFrame
 		virtual void OnTextEnter(wxCommandEvent &event) {event.Skip();}
 
 		virtual void OnStrongConnToggle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTable( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

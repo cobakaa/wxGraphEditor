@@ -113,6 +113,10 @@ add_executable(wxPaintingTest
                 include/guifrmMain.h
                 include/node.h
                 include/tools.h
+                include/guiTable.h
+                include/table.h
+                src/table.cpp
+                src/guiTable.cpp
                 src/customDialog.cpp
                 src/graph.cpp
                 src/gui.cpp

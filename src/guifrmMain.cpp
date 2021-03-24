@@ -4,6 +4,7 @@
 #include "../include/tools.h"
 #include "../include/node.h"
 #include "../include/customDialog.h"
+#include "../include/guiTable.h"
 
 #include <wx/dcbuffer.h>
 #include <wx/filedlg.h>
@@ -27,6 +28,8 @@ guifrmMain::guifrmMain(wxWindow *parent)
     cols = {{*wxBLUE,  wxColour(204, 204, 255)}, {*wxCYAN,  wxColour(204, 255, 255)}, {*wxGREEN,  wxColour(204, 255, 204)}, 
         {*wxYELLOW,  wxColour(255, 255, 204)}, {*wxRED, wxColour(255, 204, 204)}, {wxColour(255, 128, 0), wxColour(255, 229, 204)},
         {wxColour(255, 0, 255), wxColour(255, 204, 255)}};
+
+    table = new guiTable(this);
 }
 
 void guifrmMain::Unsaved() {
@@ -50,6 +53,7 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
     case add:
     {
         AddCircle(wxPoint(x, y), defaultRad);
+        RefreshTable();
         Unsaved();
 
         // RenderPaint();
@@ -75,6 +79,7 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
             }
         }
 
+        RefreshTable();
         Unsaved();
 
         // m_panel6->Refresh();
@@ -110,6 +115,7 @@ void guifrmMain::OnLMouseUP(wxMouseEvent &event)
             }
             grabbed_ind = -1;
 
+            RefreshTable();
             Unsaved();
 
             m_panel6->Refresh();
@@ -159,6 +165,7 @@ void guifrmMain::OnTextEnter(wxCommandEvent& event) {
         texting_ind = -1;
 
         textCtrl1->Hide();
+        RefreshTable();
         Unsaved();
 
         m_panel6->Refresh();
@@ -785,4 +792,23 @@ void guifrmMain::OnStrongConnToggle(wxCommandEvent& event) {
     m_panel6->Refresh();
     m_panel6->Update();
         
+}
+
+void guifrmMain::OnTable(wxCommandEvent& event) {
+
+    if (!table->IsShown()) {
+        
+        table->Show(true);
+    }
+}
+
+void guifrmMain::RefreshTable() {
+    table->DeleteAllPages();
+    for (const auto& i : graph.GetComponents()) {
+        wxString str = "";
+        for (auto j : i) {
+            str += wxString(std::to_string(j)) + " ";
+        }
+        table->AddPage(str);
+    }
 }
