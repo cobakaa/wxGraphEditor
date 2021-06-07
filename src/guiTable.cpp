@@ -16,7 +16,6 @@ frmTable::frmTable( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	}
 	m_listbook1ListView->SetWindowStyleFlag( m_listbook1Flags );
 	#endif
-
 	bSizer1->Add( m_listbook1, 1, wxEXPAND | wxALL, 5 );
 
 

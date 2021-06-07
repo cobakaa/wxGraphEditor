@@ -46,7 +46,7 @@ class frmTable : public wxFrame
 
 	public:
 
-		frmTable( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Table"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 689,433 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		frmTable( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Table"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 800, 600 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~frmTable();
 

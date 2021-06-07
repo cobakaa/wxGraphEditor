@@ -8,6 +8,7 @@
 #include "node.h"
 #include "graph.h"
 #include "guiTable.h"
+#include <wx/stattext.h>
 
 class guiTable : public frmTable
 {
@@ -15,7 +16,7 @@ class guiTable : public frmTable
 		guiTable( wxWindow* parent );
 
 		void OnClose(wxCloseEvent& event) override;
-		bool AddPage(const wxString &text);
+		bool AddPage(const wxString &text, const wxString &labels);
 		void DeleteAllPages();
 
 	private:
@@ -23,6 +24,17 @@ class guiTable : public frmTable
 		// frmTable* table;
 
 };
+
+class RightPanel : public wxPanel
+{
+public:
+	RightPanel ( wxListbook * parent ) ;
+	void OnSetText ( wxCommandEvent& event ) ;
+	wxStaticText * m_text;
+	wxStaticText * labels;
+
+} ;
+
 
 
 #endif // __TABLE_H__

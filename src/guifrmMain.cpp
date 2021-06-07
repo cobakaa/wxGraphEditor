@@ -806,9 +806,18 @@ void guifrmMain::RefreshTable() {
     table->DeleteAllPages();
     for (const auto& i : graph.GetComponents()) {
         wxString str = "";
+        wxString labels = "{";
         for (auto j : i) {
             str += wxString(std::to_string(j)) + " ";
+            if (graph.GetNodes()[j].GetLabel() == "") {
+                graph.GetNodes()[j].GetLabel() = wxString(wxString("v") + wxString(std::to_string(j)));
+            }
+            labels += wxString(graph.GetNodes()[j].GetLabel());
+            if (j != i.back()) {
+                labels += wxString(", ");
+            }
         }
-        table->AddPage(str);
+        labels += wxString("}");
+        table->AddPage(str, labels);
     }
 }

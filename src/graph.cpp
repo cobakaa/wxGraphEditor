@@ -293,7 +293,7 @@ void Graph::dfs1(int v) {
 
 void Graph::dfs2 (int v) {
     used[v] = true;
-	component.push_back (v);
+	component.push_back(v);
 	for (size_t i=0; i< gr[v].size(); ++i) {
         if (!used[ gr[v][i] ]) {
             dfs2 (gr[v][i]);
