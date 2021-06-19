@@ -24,6 +24,8 @@
 #include <wx/frame.h>
 #include <wx/textctrl.h>
 #include <wx/listbook.h>
+#include <wx/listctrl.h>
+
 
 ///////////////////////////////////////////////////////////////////////////
 

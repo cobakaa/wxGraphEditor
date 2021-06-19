@@ -19,7 +19,7 @@ bool guiTable::AddPage(const wxString &text, const wxString &labels) {
     rp->m_text->SetLabel(wxT("Названия вершин компонент сильной связности графа"));
     rp->labels->SetLabel(labels);
 
-    wxFont font = wxFont();
+    wxFont font = wxFont(*wxNORMAL_FONT);
     font.MakeLarger();
     rp->m_text->SetFont(font);
     rp->labels->SetFont(font);

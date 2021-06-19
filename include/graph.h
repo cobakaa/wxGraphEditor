@@ -4,6 +4,7 @@
 #include <vector>
 #include "node.h"
 #include "tools.h"
+#include <algorithm>
 
 class Graph {
 

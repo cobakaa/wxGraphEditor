@@ -37,6 +37,7 @@ frmMain::frmMain( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	m_panel6 = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxTAB_TRAVERSAL|wxVSCROLL );
 	
+	m_panel6->SetBackgroundColour(*wxWHITE);
 	m_panel6->SetScrollbars(10, 10, 6, 8);
 	m_panel6->SetVirtualSize(wxSize(4000,4000));
 	m_panel6->SetScrollRate( 5, 5 );
