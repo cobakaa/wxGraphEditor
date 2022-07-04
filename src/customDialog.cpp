@@ -2,7 +2,7 @@
 
 
 CustomDialog::CustomDialog(const wxString & title)
-       : wxDialog(NULL, -1, title, wxDefaultPosition, wxSize(260, 220))
+       : wxDialog(NULL, -1, title, wxDefaultPosition, wxSize(260, 280))
 {
 
   wxPanel *panel = new wxPanel(this, -1);
