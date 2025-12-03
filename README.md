@@ -1,36 +1,63 @@
 # wxGraphEditor
-## Graph editor using C++ built with wxWidgets.
 
+**wxGraphEditor** is a cross-platform graph editor built on top of wxWidgets. The project provides a powerful and intuitive interface for creating, visualizing, and editing various types of graphs (directed, undirected, weighted, and unweighted). It is useful for educational purposes, modeling, and research.
+
+![wxGraphEditor Screenshot](https://i.imgur.com/IrBGs7W.png)
 
 ## Features
 
-- Сreate an directed and undirected graph
-- Sign vertices of graphs
-- Import and save graph files
-- Highlight the components of a graph's strong connectivity
-- Build a table with the names of the vertices of the components of the strong connectivity of the graph
-
+- **Visual Graph Modeling:** Easily add, delete, and modify nodes and edges.
+- **Multiple Graph Types:** Supports directed, undirected graphs.
+- **Import/Export:** Save and load graphs in popular file format.
+- **Cross-Platform:** Works on Windows, Linux, and macOS (with wxWidgets).
+- **UI:** Clean window design; drag-and-drop support for elements.
 
 ## Installation
 
-There is a cmake file here, but first you will have to install the wxWidgets library.
-There is instructions for Ubuntu.
+### Requirements
 
-Installing wxWidgets library:
-```sh
-apt install build-essential
-apt-get install libwxbase3.0-dev libwxgtk3.0-gtk3-dev
+- [wxWidgets](https://www.wxwidgets.org/) 3.1+
+- C++17+
+- CMake
+- Git
+
+### Build Instructions
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/cobakaa/wxGraphEditor.git
+   cd wxGraphEditor
+   ```
+
+2. Build the project:
+   ```bash
+   mkdir build
+   cd build
+   cmake ..
+   cmake --build .
+   ```
+
+## Quick Start
+
+Run the application:
+
+```bash
+./wxGraphEditor
 ```
 
-For compiling components:
+## Contributing
 
-```sh
-cmake .
-make
-```
+1. Fork the repository and create a new branch:
+   ```bash
+   git checkout -b feature/my-feature
+   ```
+2. Make your changes and add tests.
+3. Open a pull request.
 
-For launching the app:
+## License
 
-```sh
-./wxPaintingTest
-```
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+**wxGraphEditor** — A simple tool for graph editing and visualization!
